@@ -1,34 +1,34 @@
 #' @export
 new_set <- function() {
-	s <- new.env(parent = emptyenv(), size = 0L)
-	structure(s, class = "set")
+	x <- new.env(parent = emptyenv(), size = 0L)
+	structure(x, class = "set")
 }
 
 #' @export
-insert <- function(s, key, ...)
-	UseMethod("insert", s)
+insert <- function(x, key, ...)
+	UseMethod("insert", x)
 
 #' @export
-insert.set <- function(s, key, ...)
+insert.set <- function(x, key, ...)
 {
 	h <- hash(key)
-	lst <- s[[h]]
-	for (x in lst)
-		if (identical(x, key))
+	lst <- x[[h]]
+	for (el in lst)
+		if (identical(el, key))
 			return(key)
-	s[[h]] <- c(lst, list(key))
+	x[[h]] <- c(lst, list(key))
 	return(key)
 }
 
 #' @export
-query <- function(s, key) UseMethod("query", s)
+query <- function(x, key) UseMethod("query", x)
 
 #' @export
-query.set <- function(s, key)
+query.set <- function(x, key)
 {
-	lst <- s[[hash(key)]]
-	for (x in lst)
-		if (identical(x, key))
+	lst <- x[[hash(key)]]
+	for (el in lst)
+		if (identical(el, key))
 			return(TRUE)
 	return(FALSE)
 }
