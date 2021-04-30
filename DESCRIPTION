@@ -6,7 +6,7 @@ Authors@R:
            family = "Gherardi",
            role = c("aut", "cre"),
            email = "vgherard@sissa.it",
-           comment = c(ORCID = ""0000-0002-8215-3013""))
+           comment = c(ORCID = "0000-0002-8215-3013"))
 Description: Hash table implementation with arbitrary R objects as keys.
 License: GPL (>= 3)
 Encoding: UTF-8
