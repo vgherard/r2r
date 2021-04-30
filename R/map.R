@@ -8,20 +8,25 @@ new_map <- function() {
 insert.map <- function(x, key, value, ...)
 {
 	h <- hash(key)
-	lst <- x[[h]]
-	for (el in lst)
-		if (identical(el[[1]], key))
-			return(el[[2]])
-	x[[h]] <- c(lst, list(list(key, value)))
-	return(key)
+	while (!is.null(match <- x[[h]])) {
+		if (identical(match[[1]], key)) {
+			match[[2]] <- value
+			return(match)
+		}
+		h <- paste0(h, "0")
+	}
+	x[[h]] <- list(key, value)
+	return(x[[h]])
 }
 
 #' @export
 query.map <- function(x, key)
 {
-	lst <- x[[hash(key)]]
-	for (el in lst)
-		if (identical(el[[1]], key))
-			return(el[[2]])
+	h <- hash(key)
+	while (!is.null(match <- x[[h]])) {
+		if (identical(match[[1]], key))
+			return(match[[2]])
+		h <- paste0(h, "0")
+	}
 	return(NULL)
 }

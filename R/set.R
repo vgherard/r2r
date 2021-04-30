@@ -12,11 +12,12 @@ insert <- function(x, key, ...)
 insert.set <- function(x, key, ...)
 {
 	h <- hash(key)
-	lst <- x[[h]]
-	for (el in lst)
-		if (identical(el, key))
+	while (!is.null(match <- x[[h]])) {
+		if (identical(match, key))
 			return(key)
-	x[[h]] <- c(lst, list(key))
+		h <- paste0(h, "0")
+	}
+	x[[h]] <- key
 	return(key)
 }
 
@@ -26,9 +27,11 @@ query <- function(x, key) UseMethod("query", x)
 #' @export
 query.set <- function(x, key)
 {
-	lst <- x[[hash(key)]]
-	for (el in lst)
-		if (identical(el, key))
+	h <- hash(key)
+	while (!is.null(match <- x[[h]])) {
+		if (identical(match, key))
 			return(TRUE)
+		h <- paste0(h, "0")
+	}
 	return(FALSE)
 }
