@@ -1,10 +1,11 @@
-new_map <- function(compare, throw, default) {
+new_map <- function(hash, compare, throw, default) {
 	keys <- new.env(parent = emptyenv(), size = 0L)
 	values <- new.env(parent = emptyenv(), size = 0L)
 	structure(
 		list(),
 		keys = keys,
 		values = values,
+		hash = hash,
 		compare = compare,
 		throw = throw,
 		default = default,
@@ -13,9 +14,14 @@ new_map <- function(compare, throw, default) {
 }
 
 #' @export
-map <- function(..., compare = identical, throw = FALSE, default = NULL)
+map <- function(...,
+		hash = default_hash,
+		compare = identical,
+		throw = FALSE,
+		default = NULL
+		)
 {
-	m <- new_map(compare, throw, default)
+	m <- new_map(hash, compare, throw, default)
 	for (pair in list(...))
 		insert(m, pair[[1]], pair[[2]])
 	return(m)
@@ -26,7 +32,7 @@ insert.map <- function(x, key, value, ...)
 {
 	keys <- attr(x, "keys")
 	values <- attr(x, "values")
-	h <- get_env_key(keys, key, attr(x, "compare"))
+	h <- get_env_key(keys, key, attr(x, "hash"), attr(x, "compare"))
 	keys[[h]] <- key
 	values[[h]] <- value
 }
@@ -36,7 +42,7 @@ delete.map <- function(x, key, ...)
 {
 	keys <- attr(x, "keys")
 	values <- attr(x, "values")
-	h <- get_env_key(keys, attr(x, "compare"))
+	h <- get_env_key(keys, key, attr(x, "hash"), attr(x, "compare"))
 	keys[[h]] <- values[[h]] <- NULL
 }
 
@@ -46,7 +52,7 @@ query.map <- function(x, key)
 {
 	keys <- attr(x, "keys")
 	values <- attr(x, "values")
-	h <- get_env_key(keys, key, attr(x, "compare"))
+	h <- get_env_key(keys, key, attr(x, "hash"), attr(x, "compare"))
 	if (!is.null(keys[[h]]))
 		return(values[[h]])
 	else if (attr(x, "throw"))
@@ -62,7 +68,7 @@ length.map <- function(x) length(attr(x, "keys"))
 has_key.map <- function(x, key)
 {
 	keys <- attr(x, "keys")
-	h <- get_env_key(keys, attr(x, "compare"))
+	h <- get_env_key(keys, key, attr(x, "hash"), attr(x, "compare"))
 	!is.null(keys[[h]])
 }
 

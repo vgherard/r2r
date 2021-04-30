@@ -1,12 +1,17 @@
-new_set <- function(compare) {
+new_set <- function(hash, compare) {
 	keys <- new.env(parent = emptyenv(), size = 0L)
-	structure(list(), keys = keys, compare = compare, class = "set")
+	structure(list(),
+		  keys = keys,
+		  hash = hash,
+		  compare = compare,
+		  class = "set"
+		  )
 }
 
 #' @export
-set <- function(..., compare = identical)
+set <- function(..., hash = default_hash, compare = identical)
 {
-	s <- new_set(compare)
+	s <- new_set(hash, compare)
 	for (key in list(...))
 		insert(s, key)
 	return(s)
@@ -16,7 +21,7 @@ set <- function(..., compare = identical)
 insert.set <- function(x, key, ...)
 {
 	keys <- attr(x, "keys")
-	h <- get_env_key(keys, key, attr(x, "compare"))
+	h <- get_env_key(keys, key, attr(x, "hash"), attr(x, "compare"))
 	keys[[h]] <- key
 }
 
@@ -24,14 +29,14 @@ insert.set <- function(x, key, ...)
 delete.set <- function(x, key, ...)
 {
 	keys <- attr(x, "keys")
-	h <- get_env_key(keys, key, attr(x, "compare"))
+	h <- get_env_key(keys, key, attr(x, "hash"), attr(x, "compare"))
 	keys[[h]] <- NULL
 }
 
 #' @export
 query.set <- function(x, key) {
 	keys <- attr(x, "keys")
-	h <- get_env_key(keys, key, attr(x, "compare"))
+	h <- get_env_key(keys, key, attr(x, "hash"), attr(x, "compare"))
 	!is.null(keys[[h]])
 }
 
