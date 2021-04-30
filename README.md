@@ -10,7 +10,7 @@
 for:
 
 -   arbitrary R objects as keys and values,
--   arbitrary key hashing and comparison functions,
+-   arbitrary key comparison and hash functions,
 -   customizable behaviour (throw or return a default values) on missing
     key exceptions.
 
