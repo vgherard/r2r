@@ -8,8 +8,7 @@ Authors@R:
            email = "vgherard@sissa.it",
            comment = c(ORCID = ""0000-0002-8215-3013""))
 Description: Hash table implementation with arbitrary R objects as keys.
-License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
-    license
+License: GPL (>= 3)
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
