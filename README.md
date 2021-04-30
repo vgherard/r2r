@@ -142,6 +142,14 @@ m[["1"]]
 #> [1] 2
 ```
 
+Alternatively, you may throw an exception upon querying a missing key:
+
+``` r
+m <- map(throw = TRUE)
+tryCatch(m[["Missing key"]], error = function(cnd) "Oops!")
+#> [1] "Oops!"
+```
+
 #### Using custom key comparison and hash functions
 
 `map`s and `set`s use by default `base::identical()` to compare keys.
