@@ -14,20 +14,29 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-new_set <- function(hash, compare) {
+new_set <- function(hash, compare, key_preproc) {
+	hash_preproc <- function(x)
+		hash(key_preproc(x))
+	compare_preproc <- function(x, y)
+		compare(key_preproc(x), key_preproc(y))
 	keys <- new.env(parent = emptyenv(), size = 0L)
 	structure(list(),
 		  keys = keys,
-		  hash = hash,
-		  compare = compare,
+		  hash = hash_preproc,
+		  compare = compare_preproc,
 		  class = "set"
 		  )
 }
 
+#' @rdname hash_table
 #' @export
-set <- function(..., hash = default_hash, compare = identical)
+hashset <- function(...,
+		hash = default_hash_fn,
+		compare = identical,
+		key_preproc = identity
+		)
 {
-	s <- new_set(hash, compare)
+	s <- new_set(hash, compare, key_preproc)
 	for (key in list(...))
 		insert(s, key)
 	return(s)

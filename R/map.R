@@ -14,37 +14,44 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-new_map <- function(hash, compare, throw, default) {
+# Internal constructor for S3 class 'map'
+new_hashmap <- function(throw, default, hash, compare, key_preproc) {
+	hash_preproc <- function(x)
+		hash(key_preproc(x))
+	compare_preproc <- function(x, y)
+		compare(key_preproc(x), key_preproc(y))
 	keys <- new.env(parent = emptyenv(), size = 0L)
 	values <- new.env(parent = emptyenv(), size = 0L)
 	structure(
 		list(),
 		keys = keys,
 		values = values,
-		hash = hash,
-		compare = compare,
+		hash = hash_preproc,
+		compare = compare_preproc,
 		throw = throw,
 		default = default,
-		class = "map"
-		) # return
+		class = "r2r_hashmap"
+	) # return
 }
 
+#' @rdname hash_table
 #' @export
-map <- function(...,
-		hash = default_hash,
-		compare = identical,
+hashmap <- function(...,
 		throw = FALSE,
-		default = NULL
+		default = NULL,
+		hash = default_hash_fn,
+		compare = identical,
+		key_preproc = identity
 		)
 {
-	m <- new_map(hash, compare, throw, default)
+	m <- new_hashmap(throw, default, hash, compare, key_preproc)
 	for (pair in list(...))
 		insert(m, pair[[1]], pair[[2]])
 	return(m)
 }
 
 #' @export
-insert.map <- function(x, key, value, ...)
+insert.r2r_hashmap <- function(x, key, value, ...)
 {
 	keys <- attr(x, "keys")
 	values <- attr(x, "values")
@@ -54,7 +61,7 @@ insert.map <- function(x, key, value, ...)
 }
 
 #' @export
-delete.map <- function(x, key, ...)
+delete.r2r_hashmap <- function(x, key, ...)
 {
 	keys <- attr(x, "keys")
 	values <- attr(x, "values")
@@ -64,12 +71,12 @@ delete.map <- function(x, key, ...)
 
 
 #' @export
-query.map <- function(x, key)
+query.r2r_hashmap <- function(x, key)
 {
 	keys <- attr(x, "keys")
 	values <- attr(x, "values")
 	h <- get_env_key(keys, key, attr(x, "hash"), attr(x, "compare"))
-	if (!is.null(keys[[h]]))
+	if (exists(h, envir = keys, inherits = FALSE))
 		return(values[[h]])
 	else if (attr(x, "throw"))
 		stop("key not found")
@@ -78,10 +85,10 @@ query.map <- function(x, key)
 }
 
 #' @export
-length.map <- function(x) length(attr(x, "keys"))
+length.r2r_hashmap <- function(x) length(attr(x, "keys"))
 
 #' @export
-has_key.map <- function(x, key)
+has_key.r2r_hashmap <- function(x, key)
 {
 	keys <- attr(x, "keys")
 	h <- get_env_key(keys, key, attr(x, "hash"), attr(x, "compare"))
@@ -89,30 +96,29 @@ has_key.map <- function(x, key)
 }
 
 #' @export
-keys.map <- function(x)
+keys.r2r_hashmap <- function(x)
 	mget_all(attr(x, "keys"))
 
 #' @export
-values.map <- function(x)
+values.r2r_hashmap <- function(x)
 	mget_all(attr(x, "values"))
 
 #' @export
-"[[.map" <- function(x, i)
+"[[.r2r_hashmap" <- function(x, i)
 	query.map(x, i)
 
 #' @export
-"[.map" <- function(x, i)
+"[.r2r_hashmap" <- function(x, i)
 	lapply(i, function(key) query.map(x, key))
 
 #' @export
-"[[<-.map" <- function(x, i, value) {
+"[[<-.r2r_hashmap" <- function(x, i, value) {
 	insert.map(x, i, value)
 	x
 }
 
 #' @export
-"[<-.map" <- function(x, i, value) {
+"[<-.r2r_hashmap" <- function(x, i, value) {
 	lapply(seq_along(i), function(n) `[[<-.map`(x, i[[n]], value[[n]]) )
 	x
 }
-

@@ -14,14 +14,12 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-dgst <- digest::digest
-
 #' @export
-default_hash <- function(key) {
+default_hash_fn <- function(key) {
 	if (is.atomic(key) && length(key) == 1L)
 		as.character(key)
 	else
-		dgst(key)
+		digest(key)
 }
 
 #' Utility for collision handling

@@ -166,7 +166,7 @@ m[[1]]
 This behavior can be changed by explicitly providing a key comparison
 function. For this to work correctly, one must also explicitly provide
 an hash function which produces the same hashes for equivalent keys. A
-simple way to do this is to compose the `default_hash()` function with a
+simple way to do this is to compose the `default_hash_fn()` function with a
 key preprocessing function; this is illustrated in the following
 example.
 
@@ -183,7 +183,7 @@ An hash function which depends only on the arguments of `z` is clearly
 given by:
 
 ``` r
-hash <- function(z) default_hash(Arg(z))
+hash <- function(z) default_hash_fn(Arg(z))
 ```
 
 Thus we create our map as:
