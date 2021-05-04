@@ -14,29 +14,36 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+#' @rdname hashtable_methods
 #' @export
 insert <- function(x, key, ...)
 	UseMethod("insert", x)
 
-#' @export
-query <- function(x, key)
-	UseMethod("query", x)
-
+#' @rdname hashtable_methods
 #' @export
 delete <- function(x, key)
 	UseMethod("delete", x)
 
+#' @rdname hashtable_methods
+#' @export
+query <- function(x, key)
+	UseMethod("query", x)
+
+#' @rdname hashtable_methods
 #' @export
 has_key <- function(x, key)
 	UseMethod("has_key", x)
 
+#' @rdname hashtable_methods
 #' @export
 keys <- function(x)
 	UseMethod("keys", x)
 
+#' @rdname hashtable_methods
 #' @export
 values <- function(x)
 	UseMethod("values", x)
 
+#' @rdname hashtable_methods
 #' @export
 `%has_key%` <- has_key

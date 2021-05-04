@@ -24,11 +24,11 @@ new_set <- function(hash, compare, key_preproc) {
 		  keys = keys,
 		  hash = hash_preproc,
 		  compare = compare_preproc,
-		  class = "set"
+		  class = c("r2r_hashmap", "r2r_hashtable")
 		  )
 }
 
-#' @rdname hash_table
+#' @rdname hashtable
 #' @export
 hashset <- function(...,
 		hash = default_hash_fn,
@@ -43,7 +43,14 @@ hashset <- function(...,
 }
 
 #' @export
-insert.set <- function(x, key, ...)
+print.r2r_hashset <- function(x, ...)
+{
+	cat("An r2r hashset.")
+	return(invisible(x))
+}
+
+#' @export
+insert.r2r_hashset <- function(x, key, ...)
 {
 	keys <- attr(x, "keys")
 	h <- get_env_key(keys, key, attr(x, "hash"), attr(x, "compare"))
@@ -51,7 +58,7 @@ insert.set <- function(x, key, ...)
 }
 
 #' @export
-delete.set <- function(x, key, ...)
+delete.r2r_hashset <- function(x, key, ...)
 {
 	keys <- attr(x, "keys")
 	h <- get_env_key(keys, key, attr(x, "hash"), attr(x, "compare"))
@@ -59,43 +66,43 @@ delete.set <- function(x, key, ...)
 }
 
 #' @export
-query.set <- function(x, key) {
+query.r2r_hashset <- function(x, key) {
 	keys <- attr(x, "keys")
 	h <- get_env_key(keys, key, attr(x, "hash"), attr(x, "compare"))
 	!is.null(keys[[h]])
 }
 
 #' @export
-length.set <- function(x) length(attr(x, "keys"))
+length.r2r_hashset <- function(x) length(attr(x, "keys"))
 
 #' @export
-has_key.set <- query.set
+has_key.r2r_hashset <- query.r2r_hashset
 
 #' @export
-keys.set <- function(x)
+keys.r2r_hashset <- function(x)
 	mget_all(attr(x, "keys"))
 
 #' @export
-"[[.set" <- function(x, i)
-	query.set(x, i)
+"[[.r2r_hashset" <- function(x, i)
+	query.r2r_hashset(x, i)
 
 #' @export
-"[.set" <- function(x, i)
-	lapply(i, function(key) query.set(x, key))
+"[.r2r_hashset" <- function(x, i)
+	lapply(i, function(key) query.r2r_hashset(x, key))
 
 #' @export
-"[[<-.set" <- function(x, i, value) {
+"[[<-.r2r_hashset" <- function(x, i, value) {
 	if (value == TRUE)
-		insert.set(x, i)
+		insert.r2r_hashset(x, i)
 	else if (value == FALSE)
-		delete.set(x, i)
+		delete.r2r_hashset(x, i)
 	else
 		stop("'value' must be either TRUE or FALSE.")
 	x
 }
 
 #' @export
-"[<-.set" <- function(x, i, value) {
+"[<-.r2r_hashset" <- function(x, i, value) {
 	lapply(seq_along(i), function(n) `[[<-.set`(x, i[[n]], value[[n]]) )
 	return(x)
 }

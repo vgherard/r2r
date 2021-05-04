@@ -30,11 +30,11 @@ new_hashmap <- function(throw, default, hash, compare, key_preproc) {
 		compare = compare_preproc,
 		throw = throw,
 		default = default,
-		class = "r2r_hashmap"
+		class = c("r2r_hashmap", "r2r_hashtable")
 	) # return
 }
 
-#' @rdname hash_table
+#' @rdname hashtable
 #' @export
 hashmap <- function(...,
 		throw = FALSE,
@@ -51,6 +51,14 @@ hashmap <- function(...,
 }
 
 #' @export
+print.r2r_hashmap <- function(x, ...)
+{
+	cat("An r2r hashmap.")
+	return(invisible(x))
+}
+
+#' @rdname hashtable_methods
+#' @export
 insert.r2r_hashmap <- function(x, key, value, ...)
 {
 	keys <- attr(x, "keys")
@@ -60,6 +68,7 @@ insert.r2r_hashmap <- function(x, key, value, ...)
 	values[[h]] <- value
 }
 
+#' @rdname hashtable_methods
 #' @export
 delete.r2r_hashmap <- function(x, key, ...)
 {
@@ -69,7 +78,7 @@ delete.r2r_hashmap <- function(x, key, ...)
 	keys[[h]] <- values[[h]] <- NULL
 }
 
-
+#' @rdname hashtable_methods
 #' @export
 query.r2r_hashmap <- function(x, key)
 {
@@ -84,9 +93,11 @@ query.r2r_hashmap <- function(x, key)
 		return(attr(x, "default"))
 }
 
+#' @rdname hashtable_methods
 #' @export
 length.r2r_hashmap <- function(x) length(attr(x, "keys"))
 
+#' @rdname hashtable_methods
 #' @export
 has_key.r2r_hashmap <- function(x, key)
 {
@@ -95,28 +106,34 @@ has_key.r2r_hashmap <- function(x, key)
 	!is.null(keys[[h]])
 }
 
+#' @rdname hashtable_methods
 #' @export
 keys.r2r_hashmap <- function(x)
 	mget_all(attr(x, "keys"))
 
+#' @rdname hashtable_methods
 #' @export
 values.r2r_hashmap <- function(x)
 	mget_all(attr(x, "values"))
 
+#' @rdname hashtable_methods
 #' @export
 "[[.r2r_hashmap" <- function(x, i)
 	query.map(x, i)
 
+#' @rdname hashtable_methods
 #' @export
 "[.r2r_hashmap" <- function(x, i)
 	lapply(i, function(key) query.map(x, key))
 
+#' @rdname hashtable_methods
 #' @export
 "[[<-.r2r_hashmap" <- function(x, i, value) {
 	insert.map(x, i, value)
 	x
 }
 
+#' @rdname hashtable_methods
 #' @export
 "[<-.r2r_hashmap" <- function(x, i, value) {
 	lapply(seq_along(i), function(n) `[[<-.map`(x, i[[n]], value[[n]]) )

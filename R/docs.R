@@ -5,9 +5,9 @@
 #' @description Objects of class \code{hashmap} and \code{hashset} store
 #' collections of key/value pairs (\code{hashmap}), or just keys
 #' (\code{hashset}), providing constant time read and write operations. Both
-#' the keys and the optional values can be arbitrary R objects. \code{map}s
-#' and \code{set}s provide an R implementation of
-#' \link[hash tables](https://en.wikipedia.org/wiki/Hash_table).
+#' the keys and the optional values can be arbitrary R objects. \code{hashmap}s
+#' and \code{hashset}s provide an R implementation of
+#' \href{https://en.wikipedia.org/wiki/Hash_table}{hash tables}.
 #'
 #' See \link[r2r]{hashtable_methods} for the list of available methods for
 #' \code{hashmap} and \code{hashset} class objects.
@@ -31,7 +31,7 @@
 #' \code{hashmap()} and \code{hashset()}, respectively.
 #'
 #' @details \code{hashmap}s and \code{hashset}s implement hash tables,
-#' building on top of base R built-in \code{\link[base](environment)}s,
+#' building on top of base R built-in \code{\link[base]{environment}}s,
 #' which by themselves are, essentially, string -> R object hash maps.
 #' In order to handle keys of non-string type, a string valued hash function
 #' \code{\link[r2r]{default_hash_fn}()} is provided, which leverages on
@@ -75,6 +75,9 @@ NULL
 
 #' @title Methods for S3 classes \code{map} and \code{set}
 #'
+#' @author Valerio Gherardi
+#'
 #' @description
 #'
 #' @name hashtable_methods
+NULL
