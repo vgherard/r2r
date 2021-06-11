@@ -14,6 +14,10 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+
+
+#------------------------------ Internal constructor --------------------------#
+
 new_set <- function(hash_fn, compare_fn, key_preproc_fn) {
 	hash_fn_preproc <- function(x)
 		hash_fn(key_preproc_fn(x))
@@ -27,6 +31,10 @@ new_set <- function(hash_fn, compare_fn, key_preproc_fn) {
 		  class = c("r2r_hashset", "r2r_hashtable")
 		  )
 }
+
+
+
+#--------------------------------- Constructor --------------------------------#
 
 #' @rdname hashtable
 #' @export
@@ -42,12 +50,9 @@ hashset <- function(...,
 	return(s)
 }
 
-#' @export
-print.r2r_hashset <- function(x, ...)
-{
-	cat("An r2r hashset.")
-	return(invisible(x))
-}
+
+
+#----------------------------- Basic R/W operations ---------------------------#
 
 #' @export
 insert.r2r_hashset <- function(x, key, ...)
@@ -73,15 +78,9 @@ query.r2r_hashset <- function(x, key) {
 	exists(h, envir = keys, inherits = FALSE)
 }
 
-#' @export
-length.r2r_hashset <- function(x) length(attr(x, "keys"))
 
-#' @export
-has_key.r2r_hashset <- query.r2r_hashset
 
-#' @export
-keys.r2r_hashset <- function(x)
-	mget_all(attr(x, "keys"))
+#------------------------------ Subsetting methods ----------------------------#
 
 #' @export
 "[[.r2r_hashset" <- function(x, i)
@@ -104,8 +103,39 @@ keys.r2r_hashset <- function(x)
 
 #' @export
 "[<-.r2r_hashset" <- function(x, i, value) {
-	lapply(seq_along(i), function(n) `[[<-.set`(x, i[[n]], value[[n]]) )
+	lapply(seq_along(i),
+	       function(n) `[[<-.r2r_hashset`(x, i[[n]], value[[n]])
+	       )
 	return(x)
 }
 
 
+
+#------------------------------- Size of hash-table ---------------------------#
+
+#' @export
+length.r2r_hashset <- function(x) length(attr(x, "keys"))
+
+
+
+#------------------------- Extra key/value access opearations -----------------#
+
+#' @export
+has_key.r2r_hashset <- query.r2r_hashset
+
+
+
+#---------------------------------- Print methods -----------------------------#
+
+#' @export
+print.r2r_hashset <- function(x, ...)
+{
+	cat("An r2r hashset.")
+	return(invisible(x))
+}
+
+#' @export
+summary.r2r_hashset <- print.r2r_hashset
+
+#' @export
+str.r2r_hashset <- print.r2r_hashset

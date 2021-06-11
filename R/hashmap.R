@@ -14,7 +14,10 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-# Internal constructor for S3 class 'map'
+
+
+#------------------------------ Internal constructor --------------------------#
+
 new_hashmap <- function(
 	on_missing_key, default, hash_fn, compare_fn, key_preproc_fn
 	)
@@ -38,6 +41,10 @@ new_hashmap <- function(
 	) # return
 }
 
+
+
+#--------------------------------- Constructor --------------------------------#
+
 #' @rdname hashtable
 #' @export
 hashmap <- function(...,
@@ -56,12 +63,9 @@ hashmap <- function(...,
 	return(m)
 }
 
-#' @export
-print.r2r_hashmap <- function(x, ...)
-{
-	cat("An r2r hashmap.")
-	return(invisible(x))
-}
+
+
+#----------------------------- Basic R/W operations ---------------------------#
 
 #' @export
 insert.r2r_hashmap <- function(x, key, value, ...)
@@ -99,24 +103,9 @@ query.r2r_hashmap <- function(x, key)
 		return(attr(x, "default"))
 }
 
-#' @export
-length.r2r_hashmap <- function(x) length(attr(x, "keys"))
 
-#' @export
-has_key.r2r_hashmap <- function(x, key)
-{
-	keys <- attr(x, "keys")
-	h <- get_env_key(keys, key, attr(x, "hash_fn"), attr(x, "compare_fn"))
-	!is.null(keys[[h]])
-}
 
-#' @export
-keys.r2r_hashmap <- function(x)
-	mget_all(attr(x, "keys"))
-
-#' @export
-values.r2r_hashmap <- function(x)
-	mget_all(attr(x, "values"))
+#------------------------------ Subsetting methods ----------------------------#
 
 #' @export
 "[[.r2r_hashmap" <- function(x, i)
@@ -134,6 +123,78 @@ values.r2r_hashmap <- function(x)
 
 #' @export
 "[<-.r2r_hashmap" <- function(x, i, value) {
-	lapply(seq_along(i), function(n) `[[<-.map`(x, i[[n]], value[[n]]) )
+	lapply(seq_along(i),
+	       function(n) `[[<-.r2r_hashmap`(x, i[[n]], value[[n]])
+	       )
 	x
 }
+
+
+
+#------------------------------- Size of hash-table ---------------------------#
+
+#' @export
+length.r2r_hashmap <- function(x) length(attr(x, "keys"))
+
+
+
+#------------------------- Extra key/value access opearations -----------------#
+
+#' @export
+values.r2r_hashmap <- function(x)
+	mget_all(attr(x, "values"))
+
+#' @export
+has_key.r2r_hashmap <- function(x, key)
+{
+	keys <- attr(x, "keys")
+	h <- get_env_key(keys, key, attr(x, "hash_fn"), attr(x, "compare_fn"))
+	!is.null(keys[[h]])
+}
+
+
+
+#----------------------------- Property getters/setters -----------------------#
+
+#' @export
+on_missing_key.r2r_hashmap <- function(x)
+	if (attr(x, "throw")) "throw" else "default"
+
+#' @export
+`on_missing_key<-.r2r_hashmap` <- function(x, action)
+{
+	if (identical(action, "throw"))
+		attr(x, "throw") <- TRUE
+	else if (identical(action, "default"))
+		attr(x, "throw") <- FALSE
+	else {
+		msg <- "'action' must be either \"throw\" or \"default\""
+		rlang::abort(msg, class = "r2r_domain_error")
+	}
+	return(x)
+}
+
+#' @export
+default.r2r_hashmap <- function(x)
+	attr(x, "default")
+
+#' @export
+`default<-.r2r_hashmap` <- function(x, value)
+	attr(x, "default") <- value
+
+
+
+#---------------------------------- Print methods -----------------------------#
+
+#' @export
+print.r2r_hashmap <- function(x, ...)
+{
+	cat("An r2r hashmap.")
+	return(invisible(x))
+}
+
+#' @export
+summary.r2r_hashmap <- print.r2r_hashmap
+
+#' @export
+str.r2r_hashmap <- print.r2r_hashmap

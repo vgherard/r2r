@@ -14,6 +14,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+
 #' @export
 insert <- function(x, key, ...)
 	UseMethod("insert", x)
@@ -27,10 +28,6 @@ query <- function(x, key)
 	UseMethod("query", x)
 
 #' @export
-has_key <- function(x, key)
-	UseMethod("has_key", x)
-
-#' @export
 keys <- function(x)
 	UseMethod("keys", x)
 
@@ -39,14 +36,11 @@ values <- function(x)
 	UseMethod("values", x)
 
 #' @export
-`%has_key%` <- has_key
+has_key <- function(x, key)
+	UseMethod("has_key", x)
 
 #' @export
-on_missing_key <- function(x)
-	UseMethod("on_missing_key", x)
-
-`on_missing_key<-` <- function(x)
-	UseMethod("on_missing_key<-", x)
+`%has_key%` <- has_key
 
 #' @export
 hash_fn <- function(x)
@@ -63,6 +57,15 @@ compare_fn <- function(x)
 #' @export
 `compare_fn<-` <- function(x)
 	UseMethod("compare_fn<-", x)
+
+#' @export
+on_missing_key <- function(x)
+	UseMethod("on_missing_key", x)
+
+#' @export
+`on_missing_key<-` <- function(x)
+	UseMethod("on_missing_key<-", x)
+
 
 #' @export
 default <- function(x)

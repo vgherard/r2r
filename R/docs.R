@@ -79,8 +79,9 @@ NULL
 #' @author Valerio Gherardi
 #' @md
 #' @description This page provides an overview of the available methods for
-#' \code{hashmap} and \code{hashset} objects. We list methods based on the
-#' general type of task addressed.
+#' \code{hashmap} and \code{hashset} objects (and for their common parent class
+#' \code{hashtable}). We list methods based on the general type of task
+#' addressed.
 #'
 #' ### Basic read/write operations
 #' - \code{\link[r2r]{insert}()}
