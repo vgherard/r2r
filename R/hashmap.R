@@ -15,19 +15,23 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # Internal constructor for S3 class 'map'
-new_hashmap <- function(throw, default, hash, compare, key_preproc) {
-	hash_preproc <- function(x)
-		hash(key_preproc(x))
-	compare_preproc <- function(x, y)
-		compare(key_preproc(x), key_preproc(y))
+new_hashmap <- function(
+	on_missing_key, default, hash_fn, compare_fn, key_preproc_fn
+	)
+{
+	throw <- ifelse(on_missing_key[[1]] == "default", FALSE, TRUE)
+	hash_fn_preproc <- function(x)
+		hash_fn(key_preproc_fn(x))
+	compare_fn_preproc <- function(x, y)
+		compare_fn(key_preproc_fn(x), key_preproc_fn(y))
 	keys <- new.env(parent = emptyenv(), size = 0L)
 	values <- new.env(parent = emptyenv(), size = 0L)
 	structure(
 		list(),
 		keys = keys,
 		values = values,
-		hash = hash_preproc,
-		compare = compare_preproc,
+		hash_fn = hash_fn_preproc,
+		compare_fn = compare_fn_preproc,
 		throw = throw,
 		default = default,
 		class = c("r2r_hashmap", "r2r_hashtable")
@@ -37,14 +41,16 @@ new_hashmap <- function(throw, default, hash, compare, key_preproc) {
 #' @rdname hashtable
 #' @export
 hashmap <- function(...,
-		throw = FALSE,
+		on_missing_key = c("default", "throw"),
 		default = NULL,
-		hash = default_hash_fn,
-		compare = identical,
-		key_preproc = identity
+		hash_fn = default_hash_fn,
+		compare_fn = identical,
+		key_preproc_fn = identity
 		)
 {
-	m <- new_hashmap(throw, default, hash, compare, key_preproc)
+	m <- new_hashmap(
+		on_missing_key, default, hash_fn, compare_fn, key_preproc_fn
+		)
 	for (pair in list(...))
 		insert(m, pair[[1]], pair[[2]])
 	return(m)
@@ -57,83 +63,75 @@ print.r2r_hashmap <- function(x, ...)
 	return(invisible(x))
 }
 
-#' @rdname hashtable_methods
 #' @export
 insert.r2r_hashmap <- function(x, key, value, ...)
 {
 	keys <- attr(x, "keys")
 	values <- attr(x, "values")
-	h <- get_env_key(keys, key, attr(x, "hash"), attr(x, "compare"))
+	h <- get_env_key(keys, key, attr(x, "hash_fn"), attr(x, "compare_fn"))
 	keys[[h]] <- key
 	values[[h]] <- value
 }
 
-#' @rdname hashtable_methods
 #' @export
 delete.r2r_hashmap <- function(x, key, ...)
 {
 	keys <- attr(x, "keys")
 	values <- attr(x, "values")
-	h <- get_env_key(keys, key, attr(x, "hash"), attr(x, "compare"))
-	keys[[h]] <- values[[h]] <- NULL
+	h <- get_env_key(keys, key, attr(x, "hash_fn"), attr(x, "compare_fn"))
+	if (exists(h, envir = keys, inherits = FALSE)) {
+		rm(list = h, envir = keys)
+		rm(list = h, envir = values)
+	}
 }
 
-#' @rdname hashtable_methods
 #' @export
 query.r2r_hashmap <- function(x, key)
 {
 	keys <- attr(x, "keys")
 	values <- attr(x, "values")
-	h <- get_env_key(keys, key, attr(x, "hash"), attr(x, "compare"))
+	h <- get_env_key(keys, key, attr(x, "hash_fn"), attr(x, "compare_fn"))
 	if (exists(h, envir = keys, inherits = FALSE))
 		return(values[[h]])
 	else if (attr(x, "throw"))
-		stop("key not found")
+		rlang::abort("Key not found", class = "r2r_missing_key")
 	else
 		return(attr(x, "default"))
 }
 
-#' @rdname hashtable_methods
 #' @export
 length.r2r_hashmap <- function(x) length(attr(x, "keys"))
 
-#' @rdname hashtable_methods
 #' @export
 has_key.r2r_hashmap <- function(x, key)
 {
 	keys <- attr(x, "keys")
-	h <- get_env_key(keys, key, attr(x, "hash"), attr(x, "compare"))
+	h <- get_env_key(keys, key, attr(x, "hash_fn"), attr(x, "compare_fn"))
 	!is.null(keys[[h]])
 }
 
-#' @rdname hashtable_methods
 #' @export
 keys.r2r_hashmap <- function(x)
 	mget_all(attr(x, "keys"))
 
-#' @rdname hashtable_methods
 #' @export
 values.r2r_hashmap <- function(x)
 	mget_all(attr(x, "values"))
 
-#' @rdname hashtable_methods
 #' @export
 "[[.r2r_hashmap" <- function(x, i)
-	query.map(x, i)
+	query.r2r_hashmap(x, i)
 
-#' @rdname hashtable_methods
 #' @export
 "[.r2r_hashmap" <- function(x, i)
-	lapply(i, function(key) query.map(x, key))
+	lapply(i, function(key) query.r2r_hashmap(x, key))
 
-#' @rdname hashtable_methods
 #' @export
 "[[<-.r2r_hashmap" <- function(x, i, value) {
-	insert.map(x, i, value)
+	insert.r2r_hashmap(x, i, value)
 	x
 }
 
-#' @rdname hashtable_methods
 #' @export
 "[<-.r2r_hashmap" <- function(x, i, value) {
 	lapply(seq_along(i), function(n) `[[<-.map`(x, i[[n]], value[[n]]) )

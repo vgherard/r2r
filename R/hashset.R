@@ -14,29 +14,29 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-new_set <- function(hash, compare, key_preproc) {
-	hash_preproc <- function(x)
-		hash(key_preproc(x))
-	compare_preproc <- function(x, y)
-		compare(key_preproc(x), key_preproc(y))
+new_set <- function(hash_fn, compare_fn, key_preproc_fn) {
+	hash_fn_preproc <- function(x)
+		hash_fn(key_preproc_fn(x))
+	compare_fn_preproc <- function(x, y)
+		compare_fn(key_preproc_fn(x), key_preproc_fn(y))
 	keys <- new.env(parent = emptyenv(), size = 0L)
 	structure(list(),
 		  keys = keys,
-		  hash = hash_preproc,
-		  compare = compare_preproc,
-		  class = c("r2r_hashmap", "r2r_hashtable")
+		  hash_fn = hash_fn_preproc,
+		  compare_fn = compare_fn_preproc,
+		  class = c("r2r_hashset", "r2r_hashtable")
 		  )
 }
 
 #' @rdname hashtable
 #' @export
 hashset <- function(...,
-		hash = default_hash_fn,
-		compare = identical,
-		key_preproc = identity
+		hash_fn = default_hash_fn,
+		compare_fn = identical,
+		key_preproc_fn = identity
 		)
 {
-	s <- new_set(hash, compare, key_preproc)
+	s <- new_set(hash_fn, compare_fn, key_preproc_fn)
 	for (key in list(...))
 		insert(s, key)
 	return(s)
@@ -53,7 +53,7 @@ print.r2r_hashset <- function(x, ...)
 insert.r2r_hashset <- function(x, key, ...)
 {
 	keys <- attr(x, "keys")
-	h <- get_env_key(keys, key, attr(x, "hash"), attr(x, "compare"))
+	h <- get_env_key(keys, key, attr(x, "hash_fn"), attr(x, "compare_fn"))
 	keys[[h]] <- key
 }
 
@@ -61,15 +61,16 @@ insert.r2r_hashset <- function(x, key, ...)
 delete.r2r_hashset <- function(x, key, ...)
 {
 	keys <- attr(x, "keys")
-	h <- get_env_key(keys, key, attr(x, "hash"), attr(x, "compare"))
-	keys[[h]] <- NULL
+	h <- get_env_key(keys, key, attr(x, "hash_fn"), attr(x, "compare_fn"))
+	if (exists(h, envir = keys, inherits = FALSE))
+		rm(h, envir = keys)
 }
 
 #' @export
 query.r2r_hashset <- function(x, key) {
 	keys <- attr(x, "keys")
-	h <- get_env_key(keys, key, attr(x, "hash"), attr(x, "compare"))
-	!is.null(keys[[h]])
+	h <- get_env_key(keys, key, attr(x, "hash_fn"), attr(x, "compare_fn"))
+	exists(h, envir = keys, inherits = FALSE)
 }
 
 #' @export
