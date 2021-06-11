@@ -5,8 +5,9 @@
 \title{Methods for S3 classes \code{hashmap} and \code{hashset}}
 \description{
 This page provides an overview of the available methods for
-\code{hashmap} and \code{hashset} objects. We list methods based on the
-general type of task addressed.
+\code{hashmap} and \code{hashset} objects (and for their common parent class
+\code{hashtable}). We list methods based on the general type of task
+addressed.
 \subsection{Basic read/write operations}{
 \itemize{
 \item \code{\link[r2r]{insert}()}

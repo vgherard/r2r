@@ -40,10 +40,10 @@ library(r2r)
 
 #### Basic Manipulations
 
-We create an empty map with:
+We create an empty hash map with:
 
 ```{r example}
-m <- map()
+m <- hashmap()
 ```
 
 We can insert key-value pairs in `m` in several different ways:
@@ -78,7 +78,7 @@ query(m, "user")
 In addition to hash maps, we can also create hash sets, which simply store keys:
 
 ```{r}
-s <- set()
+s <- hashset()
 insert(s, 1)
 s[[2]] <- T # equivalent to insert(s, 2)
 s[c(1, 2, 3)]
@@ -98,7 +98,7 @@ m[[ lm(cyl ~ mpg, mtcars) ]]
 You can set default values for missing keys. For instance:
 
 ```{r}
-m <- map(default = 0)
+m <- hashmap(default = 0)
 ```
 
 which is useful for creating a counter:
@@ -113,44 +113,37 @@ m[["1"]]
 Alternatively, you may throw an exception upon querying a missing key:
 
 ```{r}
-m <- map(throw = TRUE)
+m <- hashmap(on_missing_key = "throw")
 tryCatch(m[["Missing key"]], error = function(cnd) "Oops!")
 ```
 
 
 #### Using custom key comparison and hash functions
-`map`s and `set`s use by default `base::identical()` to compare keys. For instance:
+`hashmap`s and `hashmap`s use by default `base::identical()` to compare keys. 
+For instance:
 
 ```{r}
-m <- map()
+m <- hashmap()
 m[[1]] <- "double"
 m[["1"]] <- "character"
 m[[1]]
 ```
 
 This behavior can be changed by explicitly providing a key comparison function.
-For this to work correctly, one must also explicitly provide an hash function which produces the same hashes for equivalent keys. A simple way to do this is to compose the `default_hash_fn()` function with a key preprocessing function; this is illustrated in the following example.
+For this to work correctly, one must also explicitly provide an hash function which produces the same hashes for equivalent keys. A simple way to do this is 
+to apply a preprocessing function to keys, as illustrated by the following example.
 
-We assume that keys are length one complex numbers, and consider two keys equivalent when they have the same direction in the complex plane. A sensible comparison function is:
+We assume that keys are length one complex numbers, and consider two keys equivalent when they have the same direction in the complex plane. The direction of a complex vector can be found applying the R function `Arg()`, which is thus a sensible key preprocessing function. We can instruct an hashmap to preprocess its keys in this way through the constructor's `key_preproc_fn` argument:
 
 ```{r}
-compare <- function(z1, z2) 
-	Arg(z1) == Arg(z2)
+m <- hashmap(key_preproc_fn = Arg)
 ```
 
-An hash function which depends only on the arguments of `z` is clearly given by:
+Let us check that everything works as intended:
 
 ```{r}
-hash <- function(z) default_hash_fn(Arg(z))
-```
-
-Thus we create our map as:
-
-```{r}
-m <- map(hash = hash, compare = compare)
 m[list(1, 1 + 1i, 1i)] <- list("EAST", "NORTH-EAST", "NORTH")
 m[[10]]
 m[[100i]]
 m[[2 + 2i]]
 ```
-

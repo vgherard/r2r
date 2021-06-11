@@ -54,6 +54,7 @@ hashset <- function(...,
 
 #----------------------------- Basic R/W operations ---------------------------#
 
+#' @rdname insert
 #' @export
 insert.r2r_hashset <- function(x, key, ...)
 {
@@ -62,15 +63,18 @@ insert.r2r_hashset <- function(x, key, ...)
 	keys[[h]] <- key
 }
 
+#' @rdname delete
 #' @export
-delete.r2r_hashset <- function(x, key, ...)
+delete.r2r_hashset <- function(x, key)
 {
 	keys <- attr(x, "keys")
 	h <- get_env_key(keys, key, attr(x, "hash_fn"), attr(x, "compare_fn"))
 	if (exists(h, envir = keys, inherits = FALSE))
-		rm(h, envir = keys)
+		rm(list = h, envir = keys)
+	return(invisible(NULL))
 }
 
+#' @rdname query
 #' @export
 query.r2r_hashset <- function(x, key) {
 	keys <- attr(x, "keys")
@@ -111,15 +115,9 @@ query.r2r_hashset <- function(x, key) {
 
 
 
-#------------------------------- Size of hash-table ---------------------------#
-
-#' @export
-length.r2r_hashset <- function(x) length(attr(x, "keys"))
-
-
-
 #------------------------- Extra key/value access opearations -----------------#
 
+#' @rdname has_key
 #' @export
 has_key.r2r_hashset <- query.r2r_hashset
 

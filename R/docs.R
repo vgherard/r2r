@@ -10,7 +10,9 @@
 #' \href{https://en.wikipedia.org/wiki/Hash_table}{hash tables}.
 #'
 #' See \link[r2r]{hashtable_methods} for an overview of the available methods
-#' for \code{hashmap} and \code{hashset} class objects.
+#' for \code{hashmap} and \code{hashset} class objects. Note that both these
+#' classes have a common parent class \code{hashtable}, from which they can also
+#' inherit S3 methods.
 #'
 #' @param ... these arguments can be used to specify a set of initial elements
 #' to be inserted in the \code{hashmap} or \code{hashset}. For \code{hashmap()},

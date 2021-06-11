@@ -67,6 +67,8 @@ hashmap <- function(...,
 
 #----------------------------- Basic R/W operations ---------------------------#
 
+#' @rdname insert
+#' @param value an arbitrary R object. Value associated to \code{key}.
 #' @export
 insert.r2r_hashmap <- function(x, key, value, ...)
 {
@@ -77,8 +79,9 @@ insert.r2r_hashmap <- function(x, key, value, ...)
 	values[[h]] <- value
 }
 
+#' @rdname delete
 #' @export
-delete.r2r_hashmap <- function(x, key, ...)
+delete.r2r_hashmap <- function(x, key)
 {
 	keys <- attr(x, "keys")
 	values <- attr(x, "values")
@@ -87,6 +90,7 @@ delete.r2r_hashmap <- function(x, key, ...)
 		rm(list = h, envir = keys)
 		rm(list = h, envir = values)
 	}
+	return(invisible(NULL))
 }
 
 #' @export
@@ -129,17 +133,9 @@ query.r2r_hashmap <- function(x, key)
 	x
 }
 
-
-
-#------------------------------- Size of hash-table ---------------------------#
-
-#' @export
-length.r2r_hashmap <- function(x) length(attr(x, "keys"))
-
-
-
 #------------------------- Extra key/value access opearations -----------------#
 
+#' @rdname values
 #' @export
 values.r2r_hashmap <- function(x)
 	mget_all(attr(x, "values"))
@@ -156,10 +152,12 @@ has_key.r2r_hashmap <- function(x, key)
 
 #----------------------------- Property getters/setters -----------------------#
 
+#' @rdname hashtable_properties
 #' @export
 on_missing_key.r2r_hashmap <- function(x)
 	if (attr(x, "throw")) "throw" else "default"
 
+#' @rdname hashtable_properties
 #' @export
 `on_missing_key<-.r2r_hashmap` <- function(x, action)
 {
@@ -174,13 +172,18 @@ on_missing_key.r2r_hashmap <- function(x)
 	return(x)
 }
 
+#' @rdname hashtable_properties
 #' @export
 default.r2r_hashmap <- function(x)
 	attr(x, "default")
 
+#' @rdname hashtable_properties
 #' @export
-`default<-.r2r_hashmap` <- function(x, value)
+`default<-.r2r_hashmap` <- function(x, value) {
 	attr(x, "default") <- value
+	return(x)
+}
+
 
 
 
