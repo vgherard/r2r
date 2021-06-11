@@ -8,18 +8,18 @@
 \usage{
 hashmap(
   ...,
-  throw = FALSE,
+  on_missing_key = c("default", "throw"),
   default = NULL,
-  hash = default_hash_fn,
-  compare = identical,
-  key_preproc = identity
+  hash_fn = default_hash_fn,
+  compare_fn = identical,
+  key_preproc_fn = identity
 )
 
 hashset(
   ...,
-  hash = default_hash_fn,
-  compare = identical,
-  key_preproc = identity
+  hash_fn = default_hash_fn,
+  compare_fn = identical,
+  key_preproc_fn = identity
 )
 }
 \arguments{
@@ -27,21 +27,21 @@ hashset(
 to be inserted in the \code{hashmap} or \code{hashset}. For \code{hashmap()},
 each of these should be a \code{list} of two elements (a key-value pair).}
 
-\item{throw}{\code{TRUE} or \code{FALSE}. If \code{TRUE}, an exception is
-thrown upon query of a missing key; otherwise, a default value (specified
-through the \code{default} argument) is returned.}
+\item{on_missing_key}{either \code{"throw"} or \code{"default"}.
+In the second case, an exception is thrown upon query of a missing key; otherwise, a default value
+(specified through the \code{default} argument) is returned.}
 
 \item{default}{default value associated with missing keys. This will be
 returned only if \code{throw} is \code{FALSE}.}
 
-\item{hash}{the (string valued) hash function applied to keys. Required for
-advanced use only; see Details.}
+\item{hash_fn}{the (string valued) hash function applied to keys.
+Required for advanced use only; see Details.}
 
-\item{compare}{the (boolean valued) comparison function used for testing key
-equality. Required for advanced use only; see Details.}
+\item{compare_fn}{the (boolean valued) comparison function used for
+testing key equality. Required for advanced use only; see Details.}
 
-\item{key_preproc}{key pre-processing function applied to keys before hashing
-and comparison. Required for advanced use only; see Details.}
+\item{key_preproc_fn}{key pre-processing function applied to keys before
+hashing and comparison. Required for advanced use only; see Details.}
 }
 \value{
 a \code{hashmap} and a \code{hashset} class object for
@@ -55,8 +55,8 @@ the keys and the optional values can be arbitrary R objects. \code{hashmap}s
 and \code{hashset}s provide an R implementation of
 \href{https://en.wikipedia.org/wiki/Hash_table}{hash tables}.
 
-See \link[r2r]{hashtable_methods} for the list of available methods for
-\code{hashmap} and \code{hashset} class objects.
+See \link[r2r]{hashtable_methods} for an overview of the available methods
+for \code{hashmap} and \code{hashset} class objects.
 }
 \details{
 \code{hashmap}s and \code{hashset}s implement hash tables,
@@ -68,22 +68,23 @@ In order to handle keys of non-string type, a string valued hash function
 
 By default, key equality is tested through \code{\link[base]{identical}()}.
 For some use cases, it may be sensible to employ a different comparison
-function, which can be assigned through the \code{compare} argument. In this
-case, one must also make sure that equal (in the sense of \code{compare()})
-keys get also assigned the same hashes by \code{hash()}. A simple way to
+function, which can be assigned through the \code{compare_fn} argument. In this
+case, one must also make sure that equal (in the sense of
+\code{compare_fn()})
+keys get also assigned the same hashes by \code{hash_fn()}. A simple way to
 ensure this is to use to use a key pre-processing function, to be applied
-before both key hashing \emph{and} comparison. The \code{key_preproc}
+before both key hashing \emph{and} comparison. The \code{key_preproc_fn}
 argument provides a short-cut to this, by automatically composing both the
-provided \code{hash()} and \code{compare()} functions with
-\code{key_preproc()} function. This is illustrated in an example below.
+provided \code{hash_fn()} and \code{compare_fn()} functions with
+\code{key_preproc_fn()} function. This is illustrated in an example below.
 
 One might also want to set set specific hash and/or key comparison functions
 for efficiency reasons, e.g. if the \code{default_hash_fn()} function produces
 many collisions between inequivalent keys.
 
-When \code{throw} is \code{TRUE}, querying a missing key will cause an error.
-In this case, an \link[rlang]{rlang} condition of class
-\code{"r2r_missing_key"} is returned, which can be useful for testing
+When \code{on_missing_key} is equalt to \code{"throw"}, querying a missing
+key will cause an error. In this case, an \link[rlang]{rlang} condition of
+class \code{"r2r_missing_key"} is returned, which can be useful for testing
 purposes.
 }
 \examples{
