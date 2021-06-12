@@ -13,7 +13,7 @@ for:
 
 -   arbitrary R objects as keys and values,
 -   arbitrary key comparison and hash functions,
--   customizable behaviour (throw or return a default values) on missing
+-   customizable behaviour (throw or return a default value) on missing
     key exceptions.
 
 ## Installation
