@@ -93,6 +93,7 @@ delete.r2r_hashmap <- function(x, key)
 	return(invisible(NULL))
 }
 
+#' @rdname query
 #' @export
 query.r2r_hashmap <- function(x, key)
 {
