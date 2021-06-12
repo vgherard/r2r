@@ -4,6 +4,8 @@
 # r2r
 
 <!-- badges: start -->
+
+[![R-CMD-check](https://github.com/vgherard/r2r/workflows/R-CMD-check/badge.svg)](https://github.com/vgherard/r2r/actions)
 <!-- badges: end -->
 
 `r2r` provides a flexible implementation of hash tables in R, allowing

@@ -3,3 +3,4 @@
 ^ignore$
 ^LICENSE\.md$
 ^README\.Rmd$
+^\.github$
