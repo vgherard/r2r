@@ -16,3 +16,6 @@ RoxygenNote: 7.1.1
 Imports: digest, rlang
 URL: https://github.com/vgherard/r2r
 BugReports: https://github.com/vgherard/r2r/issues
+Suggests: 
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
