@@ -104,7 +104,9 @@ query.r2r_hashset <- function(x, key) {
 	else if (value == FALSE)
 		delete.r2r_hashset(x, i)
 	else
-		stop("'value' must be either TRUE or FALSE.")
+		rlang::abort("'value' must be either TRUE or FALSE.",
+			     class = "r2r_hashset_value_error"
+			     )
 	x
 }
 
