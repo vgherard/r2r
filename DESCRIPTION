@@ -17,5 +17,6 @@ Imports: digest, rlang
 URL: https://github.com/vgherard/r2r
 BugReports: https://github.com/vgherard/r2r/issues
 Suggests: 
+    covr,
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
