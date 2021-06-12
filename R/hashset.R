@@ -86,14 +86,17 @@ query.r2r_hashset <- function(x, key) {
 
 #------------------------------ Subsetting methods ----------------------------#
 
+#' @rdname subsetting_hashtables
 #' @export
 "[[.r2r_hashset" <- function(x, i)
 	query.r2r_hashset(x, i)
 
+#' @rdname subsetting_hashtables
 #' @export
 "[.r2r_hashset" <- function(x, i)
 	lapply(i, function(key) query.r2r_hashset(x, key))
 
+#' @rdname subsetting_hashtables
 #' @export
 "[[<-.r2r_hashset" <- function(x, i, value) {
 	if (value == TRUE)
@@ -105,6 +108,7 @@ query.r2r_hashset <- function(x, key) {
 	x
 }
 
+#' @rdname subsetting_hashtables
 #' @export
 "[<-.r2r_hashset" <- function(x, i, value) {
 	lapply(seq_along(i),
@@ -133,7 +137,11 @@ print.r2r_hashset <- function(x, ...)
 }
 
 #' @export
-summary.r2r_hashset <- print.r2r_hashset
+summary.r2r_hashset <- function(object, ...)
+{
+	cat("An r2r hashset.")
+	return(invisible(object))
+}
 
 #' @export
-str.r2r_hashset <- print.r2r_hashset
+str.r2r_hashset <- summary.r2r_hashset

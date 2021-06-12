@@ -30,6 +30,11 @@ These generics are used for inserting a single key or key/value
 pair into an \code{hashset} or \code{hashmap}, respectively. For vectorized
 insertions, see the \link[r2r]{subsetting_hashtables} documentation page.
 }
+\examples{
+s <- hashset()
+insert(s, "foo")
+s[["foo"]]
+}
 \author{
 Valerio Gherardi
 }

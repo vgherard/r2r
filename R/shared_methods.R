@@ -6,10 +6,8 @@
 #'
 #' @description Returns the total number of keys in an hash table.
 #' @param x an \code{hashset} or \code{hashmap}.
-#' @param key an arbitrary R object. Key to be inserted into the hash table.
-#' @param ... further arguments passed to or from other methods.
 #' @return an integer. Number of keys in the hash table (or elements in a set).
-#' @example
+#' @examples
 #' s <- hashset()
 #' insert(s, "foo")
 #' length(s)

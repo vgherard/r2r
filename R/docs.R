@@ -1,3 +1,5 @@
+#------------------------------- Hash table documentation ---------------------#
+#'
 #' @title Hash maps and sets
 #'
 #' @author Valerio Gherardi
@@ -56,12 +58,12 @@
 #' many collisions between inequivalent keys.
 #'
 #' When \code{on_missing_key} is equalt to \code{"throw"}, querying a missing
-#' key will cause an error. In this case, an \link[rlang]{rlang} condition of
-#' class \code{"r2r_missing_key"} is returned, which can be useful for testing
-#' purposes.
+#' key will cause an error. In this case, an rlang \link[rlang]{abort}
+#' condition  class \code{"r2r_missing_key"} is returned, which can be useful
+#' for testing purposes.
 #'
 #' @examples
-#' m <- map(
+#' m <- hashmap(
 #'         list("foo", 1),
 #'         list("bar", 1:5),
 #'         list(data.frame(x = letters, y = LETTERS), "baz")
@@ -69,13 +71,17 @@
 #' m[[ data.frame(x = letters, y = LETTERS) ]]
 #'
 #' # Set of character keys, case insensitive.
-#' m <- set("A", "B", "C", key_preproc = tolower)
+#' m <- hashset("A", "B", "C", key_preproc = tolower)
 #' m[["a"]]
 #'
 #' @seealso \link[r2r]{hashtable_methods}
 #' @name hashtable
 NULL
 
+
+
+#----------------------- Hash table methods documentation ---------------------#
+#'
 #' @title Methods for S3 classes \code{hashmap} and \code{hashset}
 #'
 #' @author Valerio Gherardi
@@ -103,4 +109,31 @@ NULL
 #' - \code{\link{on_missing_key}()}
 #' - \code{\link{default}()}
 #' @name hashtable_methods
+NULL
+
+
+
+#------------------------- Subsetting ops. documentation ----------------------#
+#'
+#' @title Subsetting \code{hashset}s and \code{hashmap}s
+#'
+#' @author Valerio Gherardi
+#' @md
+#' @description Subsetting operators \code{`[[`} and \code{`[`} for
+#' \code{hashset}s and \code{hashmap}s provide an equivalent synthax for the
+#' basic read/write operations performed by \code{\link{insert}()},
+#' \code{\link{delete}()} and \code{\link{query}()}.
+#'
+#' @param x an \code{hashset} or \code{hashmap}.
+#' @param i for \code{`[[`}-subsetting, an arbitrary R object, the key to be
+#' queried or inserted/deleted from the hash tables. For \code{`[`}-subsetting,
+#' a list whose individual elements correspond to the keys.
+#' @param value for \code{`[[`}-subsetting: \code{TRUE} or \code{FALSE} if
+#' \code{x} is an \code{hashset}, an arbitrary R object if \code{x} is an
+#' \code{hashmap}. In the case of \code{hashset}s, setting a key's value to
+#' \code{TRUE} and \code{FALSE} is equivalent to inserting and deleting,
+#' respectively, such key from the set. For \code{`[`}-subsetting, \code{value}
+#' must be a list of the same length of \code{i}, whose individual elements are
+#' the values associated to the corresponding keys in the hash table.
+#' @name subsetting_hashtables
 NULL

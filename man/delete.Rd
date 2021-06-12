@@ -24,6 +24,11 @@ delete(x, key)
 These generics are used for deleting a single key or key/value
 pair from an \code{hashset} or \code{hashmap}, respectively.
 }
+\examples{
+s <- hashset(1, 2, 3)
+delete(s, 3)
+s[[3]]
+}
 \author{
 Valerio Gherardi
 }

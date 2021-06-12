@@ -8,16 +8,17 @@
 }
 \arguments{
 \item{x}{an \code{hashset} or \code{hashmap}.}
-
-\item{key}{an arbitrary R object. Key to be inserted into the hash table.}
-
-\item{...}{further arguments passed to or from other methods.}
 }
 \value{
 an integer. Number of keys in the hash table (or elements in a set).
 }
 \description{
 Returns the total number of keys in an hash table.
+}
+\examples{
+s <- hashset()
+insert(s, "foo")
+length(s)
 }
 \author{
 Valerio Gherardi

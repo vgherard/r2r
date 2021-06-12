@@ -111,20 +111,24 @@ query.r2r_hashmap <- function(x, key)
 
 #------------------------------ Subsetting methods ----------------------------#
 
+#' @rdname subsetting_hashtables
 #' @export
 "[[.r2r_hashmap" <- function(x, i)
 	query.r2r_hashmap(x, i)
 
+#' @rdname subsetting_hashtables
 #' @export
 "[.r2r_hashmap" <- function(x, i)
 	lapply(i, function(key) query.r2r_hashmap(x, key))
 
+#' @rdname subsetting_hashtables
 #' @export
 "[[<-.r2r_hashmap" <- function(x, i, value) {
 	insert.r2r_hashmap(x, i, value)
 	x
 }
 
+#' @rdname subsetting_hashtables
 #' @export
 "[<-.r2r_hashmap" <- function(x, i, value) {
 	lapply(seq_along(i),
@@ -133,13 +137,14 @@ query.r2r_hashmap <- function(x, key)
 	x
 }
 
-#------------------------- Extra key/value access opearations -----------------#
+#------------------------ Extra key/value access operations -------------------#
 
 #' @rdname values
 #' @export
 values.r2r_hashmap <- function(x)
 	mget_all(attr(x, "values"))
 
+#' @rdname has_key
 #' @export
 has_key.r2r_hashmap <- function(x, key)
 {
@@ -159,14 +164,14 @@ on_missing_key.r2r_hashmap <- function(x)
 
 #' @rdname hashtable_properties
 #' @export
-`on_missing_key<-.r2r_hashmap` <- function(x, action)
+`on_missing_key<-.r2r_hashmap` <- function(x, value)
 {
-	if (identical(action, "throw"))
+	if (identical(value, "throw"))
 		attr(x, "throw") <- TRUE
-	else if (identical(action, "default"))
+	else if (identical(value, "default"))
 		attr(x, "throw") <- FALSE
 	else {
-		msg <- "'action' must be either \"throw\" or \"default\""
+		msg <- "'value' must be either \"throw\" or \"default\""
 		rlang::abort(msg, class = "r2r_domain_error")
 	}
 	return(x)
@@ -197,7 +202,11 @@ print.r2r_hashmap <- function(x, ...)
 }
 
 #' @export
-summary.r2r_hashmap <- print.r2r_hashmap
+summary.r2r_hashmap <- function(object, ...)
+{
+	cat("An r2r hashmap.")
+	return(invisible(object))
+}
 
 #' @export
-str.r2r_hashmap <- print.r2r_hashmap
+str.r2r_hashmap <- summary.r2r_hashmap

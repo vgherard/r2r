@@ -22,7 +22,7 @@ compare_fn(x)
 
 on_missing_key(x)
 
-on_missing_key(x, action) <- value
+on_missing_key(x) <- value
 
 default(x)
 
@@ -30,7 +30,7 @@ default(x) <- value
 
 \method{on_missing_key}{r2r_hashmap}(x)
 
-\method{on_missing_key}{r2r_hashmap}(x, action) <- value
+\method{on_missing_key}{r2r_hashmap}(x) <- value
 
 \method{default}{r2r_hashmap}(x)
 
@@ -42,9 +42,6 @@ default(x) <- value
 }
 \arguments{
 \item{x}{an \code{hashset} or \code{hashmap}.}
-
-\item{action}{a string, either \code{"throw"} or \code{"default"}. Action to
-be taken upon query of a missing key.}
 
 \item{value}{an arbitrary R object. Default value to be associated to missing
 keys in the \code{hashmap}.}

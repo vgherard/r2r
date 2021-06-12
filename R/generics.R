@@ -26,8 +26,7 @@
 #' @param ... further arguments passed to or from other methods.
 #' @return \code{key} for the \code{hashset} method,
 #' \code{value} for the \code{hashmap} method.
-#' @details
-#' @example
+#' @examples
 #' s <- hashset()
 #' insert(s, "foo")
 #' s[["foo"]]
@@ -45,9 +44,8 @@ insert <- function(x, key, ...)
 #' pair from an \code{hashset} or \code{hashmap}, respectively.
 #' @param x an \code{hashset} or \code{hashmap}.
 #' @param key an arbitrary R object. Key to be deleted from the hash table.
-#' @details
 #' @return \code{NULL}, invisibly.
-#' @example
+#' @examples
 #' s <- hashset(1, 2, 3)
 #' delete(s, 3)
 #' s[[3]]
@@ -66,13 +64,12 @@ delete <- function(x, key)
 #' see the \link[r2r]{subsetting_hashtables} documentation page.
 #' @param x an \code{hashset} or \code{hashmap}.
 #' @param key an arbitrary R object. Key to be queried from the hash table.
-#' @details
 #' @return \code{TRUE} or \code{FALSE}, for \code{hashset}s. For
 #' \code{hashmap}s, if the queried key exists in the hash table, returns the
 #' associated value (an a priori arbitrary R object); otherwise, behaves as
 #' specified by \code{\link{on_missing_key}(x)}
 #' (see also \link[r2r]{hashtable}).
-#' @example
+#' @examples
 #' s <- hashset(1, 2, 3)
 #' query(s, 3)
 #' @name query
@@ -89,7 +86,7 @@ query <- function(x, key)
 #' \code{hashset} or \code{hashmap}, respectively.
 #' @param x an \code{hashset} or \code{hashmap}.
 #' @return a list. Registered keys in the hash table \code{x}.
-#' @example
+#' @examples
 #' s <- hashset(1, 2, 3)
 #' keys(s)
 #' @name keys
@@ -107,7 +104,7 @@ keys <- function(x)
 #' \code{hashmap} method is defined.
 #' @param x an \code{hashset} or \code{hashmap}.
 #' @return a list. Values associated to keys in the hash map \code{x}.
-#' @example
+#' @examples
 #' m <- hashmap(list("a", 1), list("b", 2))
 #' values(m)
 #' @name values
@@ -126,7 +123,7 @@ values <- function(x)
 #' @param key an arbitrary R object. Key to be checked for existence in the
 #' hash table.
 #' @return \code{TRUE} or \code{FALSE}.
-#' @example
+#' @examples
 #' m <- hashmap(list("a", 1), list("b", 2))
 #' has_key(m, "a")
 #' m %has_key% "b"
@@ -166,10 +163,10 @@ on_missing_key <- function(x)
 	UseMethod("on_missing_key", x)
 
 #' @rdname hashtable_properties
-#' @param action a string, either \code{"throw"} or \code{"default"}. Action to
+#' @param value a string, either \code{"throw"} or \code{"default"}. Action to
 #' be taken upon query of a missing key.
 #' @export
-`on_missing_key<-` <- function(x, action)
+`on_missing_key<-` <- function(x, value)
 	UseMethod("on_missing_key<-", x)
 
 #' @rdname hashtable_properties

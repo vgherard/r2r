@@ -20,6 +20,10 @@ This function is used to list all values associated to keys in
 an \code{hashmap}. Implemented as a generic, but currently only the
 \code{hashmap} method is defined.
 }
+\examples{
+m <- hashmap(list("a", 1), list("b", 2))
+values(m)
+}
 \author{
 Valerio Gherardi
 }

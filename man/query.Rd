@@ -26,6 +26,10 @@ These generics are used for querying a single key from an
 \code{hashset} or \code{hashmap}, respectively. For vectorized queries,
 see the \link[r2r]{subsetting_hashtables} documentation page.
 }
+\examples{
+s <- hashset(1, 2, 3)
+query(s, 3)
+}
 \author{
 Valerio Gherardi
 }

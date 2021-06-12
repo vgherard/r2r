@@ -14,6 +14,20 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+#' @title String hashes for arbitrary R objects
+#'
+#' @author Valerio Gherardi
+#' @md
+#' @description generates string hashes for arbitrary R objects as follows.
+#' This is the default hash function used by \code{hashset}s and \code{hashmap}s
+#' objects.
+#'
+#' @param key an arbitrary R object.
+#' @return a character vector of length one. Hash digest of \code{key}.
+#' @details If \code{key} is an atomic vector (as tested by
+#' \code{is.atomic(key)}) of length one, \code{default_hash_fn(key)} simply
+#' coerces the input to character. For more complex inputs, the function calls
+#' \code{digest(key)} from the \link[digest]{digest} package.
 #' @export
 default_hash_fn <- function(key) {
 	if (is.atomic(key) && length(key) == 1L)

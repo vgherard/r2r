@@ -19,6 +19,10 @@ a list. Registered keys in the hash table \code{x}.
 These generics are used for listing all keys registered in an
 \code{hashset} or \code{hashmap}, respectively.
 }
+\examples{
+s <- hashset(1, 2, 3)
+keys(s)
+}
 \author{
 Valerio Gherardi
 }
