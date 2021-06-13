@@ -18,7 +18,7 @@
 
 #------------------------------ Internal constructor --------------------------#
 
-new_set <- function(hash_fn, compare_fn, key_preproc_fn) {
+new_hashset <- function(hash_fn, compare_fn, key_preproc_fn) {
 	hash_fn_preproc <- function(x)
 		hash_fn(key_preproc_fn(x))
 	compare_fn_preproc <- function(x, y)
@@ -45,7 +45,7 @@ hashset <- function(...,
 		    )
 {
 	validate_hashset_args(hash_fn, compare_fn, key_preproc_fn)
-	s <- new_set(hash_fn, compare_fn, key_preproc_fn)
+	s <- new_hashset(hash_fn, compare_fn, key_preproc_fn)
 	for (key in list(...))
 		insert(s, key)
 	return(s)
