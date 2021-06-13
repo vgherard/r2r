@@ -8,11 +8,11 @@
 \usage{
 hashmap(
   ...,
-  on_missing_key = c("default", "throw"),
-  default = NULL,
   hash_fn = default_hash_fn,
   compare_fn = identical,
-  key_preproc_fn = identity
+  key_preproc_fn = identity,
+  on_missing_key = c("default", "throw"),
+  default = NULL
 )
 
 hashset(
@@ -27,13 +27,6 @@ hashset(
 to be inserted in the \code{hashmap} or \code{hashset}. For \code{hashmap()},
 each of these should be a \code{list} of two elements (a key-value pair).}
 
-\item{on_missing_key}{either \code{"throw"} or \code{"default"}.
-In the second case, an exception is thrown upon query of a missing key; otherwise, a default value
-(specified through the \code{default} argument) is returned.}
-
-\item{default}{default value associated with missing keys. This will be
-returned only if \code{throw} is \code{FALSE}.}
-
 \item{hash_fn}{the (string valued) hash function applied to keys.
 Required for advanced use only; see Details.}
 
@@ -42,6 +35,13 @@ testing key equality. Required for advanced use only; see Details.}
 
 \item{key_preproc_fn}{key pre-processing function applied to keys before
 hashing and comparison. Required for advanced use only; see Details.}
+
+\item{on_missing_key}{either \code{"throw"} or \code{"default"}.
+In the second case, an exception is thrown upon query of a missing key; otherwise, a default value
+(specified through the \code{default} argument) is returned.}
+
+\item{default}{default value associated with missing keys. This will be
+returned only if \code{throw} is \code{FALSE}.}
 }
 \value{
 a \code{hashmap} and a \code{hashset} class object for

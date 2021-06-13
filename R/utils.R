@@ -21,3 +21,23 @@ mget_all <- function(env)
 	names(res) <- NULL
 	return(res)
 }
+
+`validate_[_arg` <- function(i, name = "i")
+	if (!is.atomic(i) && !is.list(i))
+	{
+		msg <- paste0("'", name, "' ",
+			      "must be either an atomic vector or a list."
+		)
+		rlang::abort(msg, class = "r2r_domain_error")
+	}
+
+`validate_[<-_args` <- function(i, value)
+{
+	`validate_[_arg`(i)
+	`validate_[_arg`(value, name = "value")
+	if (length(i) != length(value))
+	{
+		msg <- "'i' and 'value' must have the same length."
+		rlang::abort(msg, class = "r2r_domain_error")
+	}
+}

@@ -39,15 +39,31 @@ new_set <- function(hash_fn, compare_fn, key_preproc_fn) {
 #' @rdname hashtable
 #' @export
 hashset <- function(...,
-		hash_fn = default_hash_fn,
-		compare_fn = identical,
-		key_preproc_fn = identity
-		)
+		    hash_fn = default_hash_fn,
+		    compare_fn = identical,
+		    key_preproc_fn = identity
+		    )
 {
+	validate_hashset_args(hash_fn, compare_fn, key_preproc_fn)
 	s <- new_set(hash_fn, compare_fn, key_preproc_fn)
 	for (key in list(...))
 		insert(s, key)
 	return(s)
+}
+
+validate_hashset_args <- function(hash_fn, compare_fn, key_preproc_fn)
+{
+	msg <- NULL
+
+	if (!is.function(hash_fn))
+		msg <- "'hash_fn' must be a function."
+	else if (!is.function(compare_fn))
+		msg <- "'compare_fn' must be a function."
+	else if (!is.function(key_preproc_fn))
+		msg <- "'key_preproc_fn' must be a function."
+
+	if (!is.null(msg))
+		rlang::abort(msg, class = "r2r_domain_error")
 }
 
 
@@ -94,7 +110,11 @@ query.r2r_hashset <- function(x, key) {
 #' @rdname subsetting_hashtables
 #' @export
 "[.r2r_hashset" <- function(x, i)
+{
+	`validate_[_arg`(i)
 	lapply(i, function(key) query.r2r_hashset(x, key))
+}
+
 
 #' @rdname subsetting_hashtables
 #' @export
@@ -113,13 +133,12 @@ query.r2r_hashset <- function(x, key) {
 #' @rdname subsetting_hashtables
 #' @export
 "[<-.r2r_hashset" <- function(x, i, value) {
+	`validate_[<-_args`(i, value)
 	lapply(seq_along(i),
 	       function(n) `[[<-.r2r_hashset`(x, i[[n]], value[[n]])
 	       )
 	return(x)
 }
-
-
 
 #------------------------- Extra key/value access opearations -----------------#
 

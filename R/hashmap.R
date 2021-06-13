@@ -19,10 +19,10 @@
 #------------------------------ Internal constructor --------------------------#
 
 new_hashmap <- function(
-	on_missing_key, default, hash_fn, compare_fn, key_preproc_fn
+	hash_fn, compare_fn, key_preproc_fn, on_missing_key, default
 	)
 {
-	throw <- ifelse(on_missing_key[[1]] == "default", FALSE, TRUE)
+	throw <- ifelse(on_missing_key[[1]] == "throw", TRUE, FALSE)
 	hash_fn_preproc <- function(x)
 		hash_fn(key_preproc_fn(x))
 	compare_fn_preproc <- function(x, y)
@@ -48,22 +48,38 @@ new_hashmap <- function(
 #' @rdname hashtable
 #' @export
 hashmap <- function(...,
-		on_missing_key = c("default", "throw"),
-		default = NULL,
 		hash_fn = default_hash_fn,
 		compare_fn = identical,
-		key_preproc_fn = identity
+		key_preproc_fn = identity,
+		on_missing_key = c("default", "throw"),
+		default = NULL
 		)
 {
 	m <- new_hashmap(
-		on_missing_key, default, hash_fn, compare_fn, key_preproc_fn
+		hash_fn, compare_fn, key_preproc_fn, on_missing_key, default
 		)
 	for (pair in list(...))
 		insert(m, pair[[1]], pair[[2]])
 	return(m)
 }
 
-
+validate_hashmap_args <- function(
+	..., hash_fn, compare_fn, key_preproc_fn, on_missing_key
+	)
+{
+	validate_hashset_args(hash_fn, compare_fn, key_preproc_fn)
+	for (pair in list(...))
+		if (!is.list(pair) || length(pair) != 2L) {
+			m <- "'...' arguments must be length two lists."
+			rlang::abort(m, class = "r2r_domain_error")
+		}
+	if (!identical(on_missing_key, "throw") &&
+	    !identical(on_missing_key, "default")
+	) {
+		m <- "'on_missing_key' must be either \"throw\" or \"default\"."
+		rlang::abort(m, class = "r2r_domain_error")
+	}
+}
 
 #----------------------------- Basic R/W operations ---------------------------#
 
@@ -120,7 +136,12 @@ query.r2r_hashmap <- function(x, key)
 #' @rdname subsetting_hashtables
 #' @export
 "[.r2r_hashmap" <- function(x, i)
+{
+	`validate_[_arg`(i)
 	lapply(i, function(key) query.r2r_hashmap(x, key))
+}
+
+
 
 #' @rdname subsetting_hashtables
 #' @export
@@ -132,6 +153,7 @@ query.r2r_hashmap <- function(x, key)
 #' @rdname subsetting_hashtables
 #' @export
 "[<-.r2r_hashmap" <- function(x, i, value) {
+	`validate_[<-_args`(i, value)
 	lapply(seq_along(i),
 	       function(n) `[[<-.r2r_hashmap`(x, i[[n]], value[[n]])
 	       )
