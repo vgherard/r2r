@@ -141,8 +141,6 @@ query.r2r_hashmap <- function(x, key)
 	lapply(i, function(key) query.r2r_hashmap(x, key))
 }
 
-
-
 #' @rdname subsetting_hashtables
 #' @export
 "[[<-.r2r_hashmap" <- function(x, i, value) {
