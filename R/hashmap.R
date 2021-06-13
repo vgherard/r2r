@@ -22,23 +22,12 @@ new_hashmap <- function(
 	hash_fn, compare_fn, key_preproc_fn, on_missing_key, default
 	)
 {
-	throw <- ifelse(on_missing_key[[1]] == "throw", TRUE, FALSE)
-	hash_fn_preproc <- function(x)
-		hash_fn(key_preproc_fn(x))
-	compare_fn_preproc <- function(x, y)
-		compare_fn(key_preproc_fn(x), key_preproc_fn(y))
-	keys <- new.env(parent = emptyenv(), size = 0L)
-	values <- new.env(parent = emptyenv(), size = 0L)
-	structure(
-		list(),
-		keys = keys,
-		values = values,
-		hash_fn = hash_fn_preproc,
-		compare_fn = compare_fn_preproc,
-		throw = throw,
-		default = default,
-		class = c("r2r_hashmap", "r2r_hashtable")
-	) # return
+	res <- new_hashtable(hash_fn, compare_fn, key_preproc_fn)
+	attr(res, "values") <- new.env(parent = emptyenv(), size = 0L)
+	attr(res, "throw") <- (on_missing_key == "throw")
+	attr(res, "default") <- default
+	class(res) <- c("r2r_hashmap", class(res))
+	return(res)
 }
 
 
@@ -51,10 +40,16 @@ hashmap <- function(...,
 		hash_fn = default_hash_fn,
 		compare_fn = identical,
 		key_preproc_fn = identity,
-		on_missing_key = c("default", "throw"),
+		on_missing_key = "default",
 		default = NULL
 		)
 {
+	validate_hashmap_args(...,
+			      hash_fn = hash_fn,
+			      compare_fn = compare_fn,
+			      key_preproc_fn = key_preproc_fn,
+			      on_missing_key = on_missing_key
+			      )
 	m <- new_hashmap(
 		hash_fn, compare_fn, key_preproc_fn, on_missing_key, default
 		)

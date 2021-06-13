@@ -1,4 +1,4 @@
-test_that("low-level constructor provides the desired structure", {
+test_that("low-level constructor returns the expected structure", {
 	hash_fn <- default_hash_fn
 	compare_fn <- identical
 	key_preproc_fn <- identity
@@ -6,11 +6,6 @@ test_that("low-level constructor provides the desired structure", {
 	s <- new_hashset(hash_fn, compare_fn, key_preproc_fn)
 
 	expect_s3_class(s, c("r2r_hashset", "r2r_hashtable"), exact = TRUE)
-
-	expect_true(is.list(s)) # R object is an empty list
-	expect_true(is.environment(attr(s, "keys")))
-	expect_true(is.function(attr(s, "hash_fn")))
-	expect_true(is.function(attr(s, "compare_fn")))
 })
 
 test_that("low-level constructor correctly assigns hash and compare fn's", {

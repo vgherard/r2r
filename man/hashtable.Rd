@@ -11,7 +11,7 @@ hashmap(
   hash_fn = default_hash_fn,
   compare_fn = identical,
   key_preproc_fn = identity,
-  on_missing_key = c("default", "throw"),
+  on_missing_key = "default",
   default = NULL
 )
 
