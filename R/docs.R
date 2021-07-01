@@ -29,7 +29,7 @@
 #' In the second case, an exception is thrown upon query of a missing key; otherwise, a default value
 #' (specified through the \code{default} argument) is returned.
 #' @param default default value associated with missing keys. This will be
-#' returned only if \code{throw} is \code{FALSE}.
+#' returned only if \code{on_missing_key} is equal to \code{"default"}.
 #'
 #' @return a \code{hashmap} and a \code{hashset} class object for
 #' \code{hashmap()} and \code{hashset()}, respectively.
@@ -57,9 +57,9 @@
 #' for efficiency reasons, e.g. if the \code{default_hash_fn()} function produces
 #' many collisions between inequivalent keys.
 #'
-#' When \code{on_missing_key} is equalt to \code{"throw"}, querying a missing
+#' When \code{on_missing_key} is equal to \code{"throw"}, querying a missing
 #' key will cause an error. In this case, an rlang \link[rlang]{abort}
-#' condition  class \code{"r2r_missing_key"} is returned, which can be useful
+#' condition  of class \code{"r2r_missing_key"} is returned, which can be useful
 #' for testing purposes.
 #'
 #' @examples
@@ -71,8 +71,8 @@
 #' m[[ data.frame(x = letters, y = LETTERS) ]]
 #'
 #' # Set of character keys, case insensitive.
-#' m <- hashset("A", "B", "C", key_preproc = tolower)
-#' m[["a"]]
+#' s <- hashset("A", "B", "C", key_preproc = tolower)
+#' s[["a"]]
 #'
 #' @seealso \link[r2r]{hashtable_methods}
 #' @name hashtable
@@ -98,7 +98,7 @@ NULL
 #' - \link[r2r]{subsetting_hashtables}: \code{`[[`}, \code{`[[<-`}, \code{`[`}
 #' and \code{`[<-`}
 #' ### Size of hash table
-#' - \code{length()}
+#' - \code{\link[r2r]{length.r2r_hashtable}()}
 #' ### Other key or value access operations
 #' - \code{\link{keys}()}
 #' - \code{\link{values}()}

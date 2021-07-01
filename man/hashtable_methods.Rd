@@ -20,7 +20,7 @@ and \code{`[<-`}
 
 \subsection{Size of hash table}{
 \itemize{
-\item \code{length()}
+\item \code{\link[r2r]{length.r2r_hashtable}()}
 }
 }
 

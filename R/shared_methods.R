@@ -28,12 +28,12 @@ keys.r2r_hashtable <- function(x)
 
 #----------------------------- Property getters/setters -----------------------#
 
-#' @rdname hashtable_properties
+#' @rdname hash_fn
 #' @export
 hash_fn.r2r_hashtable <- function(x)
 	attr(x, "hash_fn")
 
-#' @rdname hashtable_properties
+#' @rdname compare_fn
 #' @export
 compare_fn.r2r_hashtable <- function(x)
 	attr(x, "compare_fn")

@@ -173,12 +173,12 @@ has_key.r2r_hashmap <- function(x, key)
 
 #----------------------------- Property getters/setters -----------------------#
 
-#' @rdname hashtable_properties
+#' @rdname on_missing_key
 #' @export
 on_missing_key.r2r_hashmap <- function(x)
 	if (attr(x, "throw")) "throw" else "default"
 
-#' @rdname hashtable_properties
+#' @rdname on_missing_key
 #' @export
 `on_missing_key<-.r2r_hashmap` <- function(x, value)
 {
@@ -193,12 +193,12 @@ on_missing_key.r2r_hashmap <- function(x)
 	return(x)
 }
 
-#' @rdname hashtable_properties
+#' @rdname default
 #' @export
 default.r2r_hashmap <- function(x)
 	attr(x, "default")
 
-#' @rdname hashtable_properties
+#' @rdname default
 #' @export
 `default<-.r2r_hashmap` <- function(x, value) {
 	attr(x, "default") <- value

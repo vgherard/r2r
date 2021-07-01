@@ -147,34 +147,87 @@ has_key <- function(x, key)
 #' @name hashtable_properties
 NULL
 
-#' @rdname hashtable_properties
+#' @title Get hash function of an hash table
+#'
+#' @author Valerio Gherardi
+#'
+#' @description Returns the hash function used for key hashing in an hash table
+#' (\code{hashset} or \code{hashmap}).
+#' @param x an \code{hashset} or \code{hashmap}.
+#' @return a function.
+#' @examples
+#' s <- hashset()
+#' hash_fn(s)
+#' @name hash_fn
+#'
 #' @export
 hash_fn <- function(x)
 	UseMethod("hash_fn", x)
 
-#' @rdname hashtable_properties
+#' @title Get key comparison function of an hash table
+#'
+#' @author Valerio Gherardi
+#'
+#' @description Returns the key comparison function of an hash table
+#' (\code{hashset} or \code{hashmap}).
+#' @param x an \code{hashset} or \code{hashmap}.
+#' @return a function.
+#' @examples
+#' s <- hashset()
+#' compare_fn(s)
+#' @name compare_fn
+#'
 #' @export
 compare_fn <- function(x)
 	UseMethod("compare_fn", x)
 
-#' @rdname hashtable_properties
+#' @title On missing key behaviour
+#'
+#' @author Valerio Gherardi
+#'
+#' @description These generics are used to get or set the behaviour of an
+#'  \code{hashmap} upon query of a missing key (currently, only an
+#'  \code{hashmap} method is implemented).
+#' @param x an \code{hashmap}.
+#' @return a string, either \code{"throw"} or \code{"default"}.
+#' @details For more details, see the \link{hashtable} documentation page.
+#' @examples
+#' m <- hashmap()
+#' on_missing_key(m)
+#' on_missing_key(m) <- "throw"
+#' @name on_missing_key
+#'
 #' @export
 on_missing_key <- function(x)
 	UseMethod("on_missing_key", x)
 
-#' @rdname hashtable_properties
+#' @rdname on_missing_key
 #' @param value a string, either \code{"throw"} or \code{"default"}. Action to
 #' be taken upon query of a missing key.
 #' @export
 `on_missing_key<-` <- function(x, value)
 	UseMethod("on_missing_key<-", x)
 
-#' @rdname hashtable_properties
+#' @title Default \code{hashmap} values
+#'
+#' @author Valerio Gherardi
+#'
+#' @description These generics are used to get or set the default value of an
+#'  \code{hashmap}, optionally returned upon query of a missing key.
+#' @param x an \code{hashmap}.
+#' @return an arbitrary R objec.
+#' @details For more details, see the \link{hashtable} documentation page.
+#' @examples
+#' m <- hashmap()
+#' default(m)
+#' default(m) <- 840
+#' @name default
+#'
 #' @export
 default <- function(x)
 	UseMethod("default", x)
 
-#' @rdname hashtable_properties
+#' @rdname default
 #' @param value an arbitrary R object. Default value to be associated to missing
 #' keys in the \code{hashmap}.
 #' @export
