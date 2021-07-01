@@ -1,0 +1,10 @@
+pandoc: 2.11.4
+pkgdown: 1.6.1
+pkgdown_sha: ~
+articles:
+  r2r: r2r.html
+last_built: 2021-07-01T15:22Z
+urls:
+  reference: https://vgherard.github.io/r2r/, https://github.com/vgherard/r2r/reference
+  article: https://vgherard.github.io/r2r/, https://github.com/vgherard/r2r/articles
+
