@@ -110,9 +110,9 @@ query.r2r_hashset <- function(x, key) {
 #' @rdname subsetting_hashtables
 #' @export
 "[[<-.r2r_hashset" <- function(x, i, value) {
-	if (value == TRUE)
+	if (identical(value, TRUE))
 		insert.r2r_hashset(x, i)
-	else if (value == FALSE)
+	else if (identical(value, FALSE))
 		delete.r2r_hashset(x, i)
 	else
 		rlang::abort("'value' must be either TRUE or FALSE.",
