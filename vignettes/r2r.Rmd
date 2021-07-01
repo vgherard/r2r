@@ -1,0 +1,141 @@
+---
+title: "R-Object to R-Object Hash Maps"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{r2r}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+## Introduction
+
+[Hash tables](https://en.wikipedia.org/wiki/Hash_table) are among the most useful data structures for efficient coding. An hash table can be abstractly thought as a map from a set of unique keys (which may be strings, numbers, or even more complicated objects) to a set of values. From a computational viewpoint, its most distinctive feature is that its read/write operations (*i.e.* storing, retrieving or deleting a particular key or key-value pair) have average $O(1)$ time complexity, independent of the table size. 
+
+Many programming languages come with their own native implementation of hash tables (for instance `std::unordered_map/set`s in C++, or `dict`s and `set`s in Python); in base R, the objects which come closest to hash tables are `environment`s. These, however, can be somewhat cumbersome to handle from the user point of view, and only support string type keys. The purpose of `{r2r}` is to provide a more flexible implementation of hash tables in R, building on top of base R `environment`s.
+
+In particular, `r2r` hash tables support:
+- arbitrary R objects as keys and values,
+- arbitrary key comparison and hash functions,
+- customizable behaviour (throw or return a default value) on missing key exceptions.
+This document provides a quick hands-on introduction to `r2r` hash tables. 
+
+```{r setup}
+library(r2r)
+```
+
+## Basic Manipulations
+
+We create an empty hash map with:
+
+```{r example}
+m <- hashmap()
+```
+
+We can insert key-value pairs in `m` in several different ways:
+
+```{r}
+m[["key"]] <- "value"
+m[c(1, 2, 3)] <- c("a", "b", "c") # Vectorized over keys and values
+m[[c(4, 5, 6)]] <- c("d", "e", "f") # Not vectorized
+```
+
+The following queries explain the differences between the `[[` and `[` operator mentioned in the comments above:
+
+```{r}
+m[["key"]]
+
+m[c(1, 2, 3)]
+m[[c(1, 2, 3)]]
+
+m[c(4, 5, 6)]
+m[[c(4, 5, 6)]]
+```
+
+Single element insertions and queries can also be performed through the generics `insert()` and `query()`
+
+```{r}
+insert(m, "user", "vgherard") # Modifies `m` in place
+query(m, "user")
+```
+
+## Sets
+
+In addition to hash maps, we can also create hash sets, which simply store keys:
+
+```{r}
+s <- hashset()
+insert(s, 1)
+s[[2]] <- T # equivalent to insert(s, 2)
+s[c(1, 2, 3)]
+```
+
+## Key and value types
+
+There is no restriction on the type of object you can use as keys and values. For instance:
+
+```{r}
+m[[ lm(wt ~ mpg, mtcars) ]] <- list("This is my fit!", 840)
+m[[ lm(wt ~ mpg, mtcars) ]]
+m[[ lm(cyl ~ mpg, mtcars) ]]
+```
+
+## Setting default values
+You can set default values for missing keys. For instance:
+
+```{r}
+m <- hashmap(default = 0)
+```
+
+which is useful for creating a counter:
+
+```{r}
+objects <- list(1, 1, "1", FALSE, "1", 1)
+for (object in objects)
+	m[[object]] <- m[[object]] + 1
+m[["1"]]
+```
+
+Alternatively, you may throw an exception upon querying a missing key:
+
+```{r}
+m <- hashmap(on_missing_key = "throw")
+tryCatch(m[["Missing key"]], error = function(cnd) "Oops!")
+```
+
+
+## Using custom key comparison and hash functions
+`hashmap`s and `hashmap`s use by default `base::identical()` to compare keys. 
+For instance:
+
+```{r}
+m <- hashmap()
+m[[1]] <- "double"
+m[["1"]] <- "character"
+m[[1]]
+```
+
+This behavior can be changed by explicitly providing a key comparison function.
+For this to work correctly, one must also explicitly provide an hash function which produces the same hashes for equivalent keys. A simple way to do this is 
+to apply a preprocessing function to keys, as illustrated by the following example.
+
+We assume that keys are length one complex numbers, and consider two keys equivalent when they have the same direction in the complex plane. The direction of a complex vector can be found applying the R function `Arg()`, which is thus a sensible key preprocessing function. We can instruct an hashmap to preprocess its keys in this way through the constructor's `key_preproc_fn` argument:
+
+```{r}
+m <- hashmap(key_preproc_fn = Arg)
+```
+
+Let us check that everything works as intended:
+
+```{r}
+m[list(1, 1 + 1i, 1i)] <- list("EAST", "NORTH-EAST", "NORTH")
+m[[10]]
+m[[100i]]
+m[[2 + 2i]]
+```

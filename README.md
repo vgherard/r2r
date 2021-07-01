@@ -28,170 +28,36 @@ You can install the development version of `r2r` from
 devtools::install_github("vgherard/r2r")
 ```
 
-## Examples
+## Usage
 
 ``` r
 library(r2r)
-```
-
-#### Basic Manipulations
-
-We create an empty hash map with:
-
-``` r
 m <- hashmap()
-```
 
-We can insert key-value pairs in `m` in several different ways:
-
-``` r
-m[["key"]] <- "value"
-m[c(1, 2, 3)] <- c("a", "b", "c") # Vectorized over keys and values
-m[[c(4, 5, 6)]] <- c("d", "e", "f") # Not vectorized
-```
-
-The following queries explain the differences between the `[[` and `[`
-operator mentioned in the comments above:
-
-``` r
-m[["key"]]
-#> [1] "value"
-
-m[c(1, 2, 3)]
-#> [[1]]
-#> [1] "a"
-#> 
-#> [[2]]
-#> [1] "b"
-#> 
-#> [[3]]
-#> [1] "c"
-m[[c(1, 2, 3)]]
-#> NULL
-
-m[c(4, 5, 6)]
-#> [[1]]
-#> NULL
-#> 
-#> [[2]]
-#> NULL
-#> 
-#> [[3]]
-#> NULL
-m[[c(4, 5, 6)]]
-#> [1] "d" "e" "f"
-```
-
-Single element insertions and queries can also be performed through the
-generics `insert()` and `query()`
-
-``` r
-insert(m, "user", "vgherard") # Modifies `m` in place
-query(m, "user")
+# Insert and query a single key-value pair
+m[[ "user" ]] <- "vgherard"
+m[[ "user" ]]
 #> [1] "vgherard"
-```
 
-#### Sets
-
-In addition to hash maps, we can also create hash sets, which simply
-store keys:
-
-``` r
-s <- hashset()
-insert(s, 1)
-s[[2]] <- T # equivalent to insert(s, 2)
-s[c(1, 2, 3)]
+# Insert and query multiple key-value pairs
+m[ c(1, 2, 3) ] <- c("one", "two", "three")
+m[ c(1, 3) ]
 #> [[1]]
-#> [1] TRUE
+#> [1] "one"
 #> 
 #> [[2]]
-#> [1] TRUE
-#> 
-#> [[3]]
-#> [1] FALSE
+#> [1] "three"
+
+# Keys and values can be arbitrary R objects
+m[[ lm(mpg ~ wt, mtcars) ]] <- c(TRUE, FALSE, TRUE)
+m[[ lm(mpg ~ wt, mtcars) ]]
+#> [1]  TRUE FALSE  TRUE
 ```
 
-#### Key and value types
+## Getting help
 
-There is no restriction on the type of object you can use as keys and
-values. For instance:
-
-``` r
-m[[ lm(wt ~ mpg, mtcars) ]] <- list("This is my fit!", 840)
-m[[ lm(wt ~ mpg, mtcars) ]]
-#> [[1]]
-#> [1] "This is my fit!"
-#> 
-#> [[2]]
-#> [1] 840
-m[[ lm(cyl ~ mpg, mtcars) ]]
-#> NULL
-```
-
-#### Setting default values
-
-You can set default values for missing keys. For instance:
-
-``` r
-m <- hashmap(default = 0)
-```
-
-which is useful for creating a counter:
-
-``` r
-objects <- list(1, 1, "1", FALSE, "1", 1)
-for (object in objects)
-    m[[object]] <- m[[object]] + 1
-m[["1"]]
-#> [1] 2
-```
-
-Alternatively, you may throw an exception upon querying a missing key:
-
-``` r
-m <- hashmap(on_missing_key = "throw")
-tryCatch(m[["Missing key"]], error = function(cnd) "Oops!")
-#> [1] "Oops!"
-```
-
-#### Using custom key comparison and hash functions
-
-`hashmap`s and `hashmap`s use by default `base::identical()` to compare
-keys. For instance:
-
-``` r
-m <- hashmap()
-m[[1]] <- "double"
-m[["1"]] <- "character"
-m[[1]]
-#> [1] "double"
-```
-
-This behavior can be changed by explicitly providing a key comparison
-function. For this to work correctly, one must also explicitly provide
-an hash function which produces the same hashes for equivalent keys. A
-simple way to do this is to apply a preprocessing function to keys, as
-illustrated by the following example.
-
-We assume that keys are length one complex numbers, and consider two
-keys equivalent when they have the same direction in the complex plane.
-The direction of a complex vector can be found applying the R function
-`Arg()`, which is thus a sensible key preprocessing function. We can
-instruct an hashmap to preprocess its keys in this way through the
-constructor’s `key_preproc_fn` argument:
-
-``` r
-m <- hashmap(key_preproc_fn = Arg)
-```
-
-Let us check that everything works as intended:
-
-``` r
-m[list(1, 1 + 1i, 1i)] <- list("EAST", "NORTH-EAST", "NORTH")
-m[[10]]
-#> [1] "EAST"
-m[[100i]]
-#> [1] "NORTH"
-m[[2 + 2i]]
-#> [1] "NORTH-EAST"
-```
+For further details, including an introductory vignette illustrating the
+features of `r2r` hash maps, you can consult the `r2r`
+[website](https://vgherard.github.io/r2r/). If you encounter a bug, want
+to suggest a feature or need further help, you can [open a GitHub
+issue](https://github.com/vgherard/r2r/issues).

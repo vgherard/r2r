@@ -6,3 +6,6 @@
 ^\.github$
 ^codecov\.yml$
 ^\.scribblr$
+^_pkgdown\.yml$
+^docs$
+^pkgdown$
