@@ -127,13 +127,14 @@ NULL
 #' @param x an \code{hashset} or \code{hashmap}.
 #' @param i for \code{`[[`}-subsetting, an arbitrary R object, the key to be
 #' queried or inserted/deleted from the hash tables. For \code{`[`}-subsetting,
-#' a list whose individual elements correspond to the keys.
+#' a list or an atomic vector whose individual elements correspond to the keys.
 #' @param value for \code{`[[`}-subsetting: \code{TRUE} or \code{FALSE} if
 #' \code{x} is an \code{hashset}, an arbitrary R object if \code{x} is an
 #' \code{hashmap}. In the case of \code{hashset}s, setting a key's value to
 #' \code{TRUE} and \code{FALSE} is equivalent to inserting and deleting,
 #' respectively, such key from the set. For \code{`[`}-subsetting, \code{value}
-#' must be a list of the same length of \code{i}, whose individual elements are
-#' the values associated to the corresponding keys in the hash table.
+#' must be a list or an atomic vector of the same length of \code{i},
+#' whose individual elements are the values associated to the corresponding
+#' keys in the hash table.
 #' @name subsetting_hashtables
 NULL
