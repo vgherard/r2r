@@ -13,3 +13,11 @@ test_that("is equivalent to as.character() for atomic length-one input", {
 	for (input in inputs)
 		expect_identical(default_hash_fn(input), as.character(input))
 })
+
+test_that("Utility for collision handling works as expected", {
+	env <- new.env(); env[["1"]] <- "1"
+	key <- 1
+	hash <- as.character
+	compare <- identical
+	expect_identical(get_env_key(env, key, hash, compare), "10")
+})
