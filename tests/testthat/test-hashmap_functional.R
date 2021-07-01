@@ -11,8 +11,10 @@ test_that("insert/query/delete operations work as expected for simple case", {
 	expect_identical(query(m, "840"), NULL)
 	expect_identical(query(m, data.frame()), "data")
 	expect_identical(query(m, data.frame(x = 1:10)), NULL)
+	expect_true(has_key(m, "a"))
 
 	delete(m, "a")
+	expect_false(has_key(m, "a"))
 	expect_identical(query(m, "a"), NULL)
 	expect_identical(query(m, 840), "number")
 	expect_identical(query(m, data.frame()), "data")
@@ -45,7 +47,7 @@ test_that("Vectorized subsetting works as expected for simple case", {
 
 })
 
-test_that("length() returns number of elements in the set", {
+test_that("length() returns number of elements in the map", {
 	m <- hashmap()
 
 	expect_identical(length(m), 0L)
@@ -57,7 +59,7 @@ test_that("length() returns number of elements in the set", {
 	expect_identical(length(m), 2L)
 })
 
-test_that("print methods return the hashset itself, invisibly", {
+test_that("print methods return the hashnap itself, invisibly", {
 	m <- hashmap()
 
 	capture_output(
@@ -68,4 +70,30 @@ test_that("print methods return the hashset itself, invisibly", {
 
 })
 
+test_that("customizing missing key behaviour works as expected in simple case",
+{
+	m <- hashmap()
 
+	expect_identical(on_missing_key(m), "default")
+
+	expect_error(
+		on_missing_key(m) <- TRUE, class = "r2r_domain_error"
+		)
+
+	expect_error(
+		on_missing_key(m) <- "throw", NA
+	)
+
+	expect_identical(on_missing_key(m), "throw")
+
+	expect_error(m[[1]], class = "r2r_missing_key")
+
+})
+
+test_that("setting a custom default value works as expected", {
+	m <- hashmap()
+	x <- 840841842
+	default(m) <- x
+	expect_identical(default(m), x)
+	expect_identical(m[[1]], x)
+})
