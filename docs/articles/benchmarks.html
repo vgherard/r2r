@@ -96,13 +96,7 @@
 <p>This vignette provides a comparison of <a href="https://github.com/vgherard/r2r">r2r</a> with the same-purpose CRAN package <a href="https://CRAN.R-project.org/package=hash"><code>{hash}</code></a>, which also offers an implementation of hash tables based on R environments. We first describe the features offered by both packages, and then perform some benchmark timing comparisons. The package versions referred to in this vignette are:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">hash</span><span class="op">)</span>
-<span class="co">#&gt; hash-2.2.6.1 provided by Decision Patterns</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/vgherard/r2r">r2r</a></span><span class="op">)</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Caricamento pacchetto: 'r2r'</span>
-<span class="co">#&gt; I seguenti oggetti sono mascherati da 'package:hash':</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;     delete, keys, values</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/packageDescription.html">packageVersion</a></span><span class="op">(</span><span class="st">"hash"</span><span class="op">)</span>
 <span class="co">#&gt; [1] '2.2.6.1'</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/packageDescription.html">packageVersion</a></span><span class="op">(</span><span class="st">"r2r"</span><span class="op">)</span>
@@ -114,24 +108,6 @@
 <p>Hash tables provided by <code>r2r</code> support arbitrary type keys and values, arbitrary key comparison and hash functions, and have customizable behaviour (either throw an exception or return a default value) upon query of a missing key.</p>
 <p>In contrast, hash tables in <code>hash</code> currently support only string keys, with basic identity comparison (the hashing is performed automatically by the underlying <code>environment</code> objects); values can be arbitrary R objects. Querying missing keys through non-vectorized <code><a href="https://rdrr.io/r/base/Extract.html">[[</a></code>-subsetting returns the default value <code>NULL</code>, whereas queries through vectorized <code><a href="https://rdrr.io/r/base/Extract.html">[</a></code>-subsetting result in an error. On the other hand, <code>hash</code> also offers support for inverting hash tables (an experimental feature at the time of writing).</p>
 <p>The table below summarizes the features of the two packages</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span>
-    <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>
-        Feature <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>
-            <span class="st">"Basic data structure"</span>,
-            <span class="st">"Arbitrary type keys"</span>, 
-            <span class="st">"Arbitrary type values"</span>,
-            <span class="st">"Arbitrary hash function"</span>,
-            <span class="st">"Arbitrary key comparison function"</span>,
-            <span class="st">"Throw or return default on missing keys"</span>,
-            <span class="st">"Hash table inversion"</span>
-        <span class="op">)</span>,
-        r2r <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"R environment"</span>, <span class="st">"X"</span>, <span class="st">"X"</span>, <span class="st">"X"</span>, <span class="st">"X"</span>, <span class="st">"X"</span>, <span class="st">""</span><span class="op">)</span>,
-        hash <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"R environment"</span>, <span class="st">""</span>, <span class="st">"X"</span>, <span class="st">""</span>, <span class="st">""</span>, <span class="st">""</span>, <span class="st">"X"</span><span class="op">)</span>
-        <span class="op">)</span>,
-    align <span class="op">=</span> <span class="st">"c"</span>,
-    caption <span class="op">=</span> <span class="st">"Features supported by {r2r} and {hash}"</span>
-    <span class="op">)</span></code></pre></div>
 <table class="table">
 <caption>Features supported by {r2r} and {hash}</caption>
 <thead><tr class="header">
@@ -182,16 +158,16 @@
 <h2 class="hasAnchor">
 <a href="#performance-tests" class="anchor"></a>Performance tests</h2>
 <p>We will perform our benchmark tests using the CRAN package <a href="https://CRAN.R-project.org/package=microbenchmark"><code>microbenchmark</code></a>.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/joshuaulrich/microbenchmark/">microbenchmark</a></span><span class="op">)</span></code></pre></div>
 <div id="key-insertion" class="section level4">
 <h4 class="hasAnchor">
 <a href="#key-insertion" class="anchor"></a>Key insertion</h4>
 <p>We start by timing the insertion of:</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">N</span> <span class="op">&lt;-</span> <span class="fl">1e4</span></code></pre></div>
 <p>random key-value pairs (with possible repetitions). In order to perform a meaningful comparison between the two packages, we restrict to string (<em>i.e.</em> length one character) keys. We can generate random keys as follows:</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">chars</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">letters</span>, <span class="va">LETTERS</span>, <span class="fl">0</span><span class="op">:</span><span class="fl">9</span><span class="op">)</span>
 <span class="va">random_keys</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">n</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span>
     <span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span><span class="va">chars</span>, <span class="va">n</span>, replace <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,
@@ -205,7 +181,7 @@
 <span class="va">keys</span> <span class="op">&lt;-</span> <span class="fu">random_keys</span><span class="op">(</span><span class="va">N</span><span class="op">)</span>
 <span class="va">values</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span><span class="va">N</span><span class="op">)</span></code></pre></div>
 <p>We test both the non-vectorized (<code>[[&lt;-</code>) and vectorized (<code>[&lt;-</code>) operators:</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/microbenchmark/man/microbenchmark.html">microbenchmark</a></span><span class="op">(</span>
     `r2r_[[&lt;-` <span class="op">=</span> <span class="op">{</span>
         <span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq_along</a></span><span class="op">(</span><span class="va">keys</span><span class="op">)</span><span class="op">)</span>
@@ -222,18 +198,18 @@
     setup <span class="op">=</span> <span class="op">{</span> <span class="va">m_r2r</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/hashtable.html">hashmap</a></span><span class="op">(</span><span class="op">)</span>; <span class="va">m_hash</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/hash/man/hash.html">hash</a></span><span class="op">(</span><span class="op">)</span> <span class="op">}</span>
 <span class="op">)</span>
 <span class="co">#&gt; Unit: milliseconds</span>
-<span class="co">#&gt;       expr       min        lq     mean   median       uq      max neval</span>
-<span class="co">#&gt;   r2r_[[&lt;- 115.05928 188.59612 240.7188 230.9684 290.5477 433.5929    30</span>
-<span class="co">#&gt;    r2r_[&lt;- 127.62918 183.58877 234.0835 212.6456 292.8060 405.7151    30</span>
-<span class="co">#&gt;  hash_[[&lt;- 104.17952 152.63823 209.0943 195.0728 246.7377 365.3848    30</span>
-<span class="co">#&gt;   hash_[&lt;-  58.04882  92.90648 115.8599 110.2942 131.1285 237.6343    30</span></code></pre></div>
+<span class="co">#&gt;       expr       min        lq      mean    median       uq      max neval</span>
+<span class="co">#&gt;   r2r_[[&lt;- 106.75810 140.69350 194.64487 183.96862 234.6608 360.4883    30</span>
+<span class="co">#&gt;    r2r_[&lt;- 102.71972 148.61470 183.65961 170.90279 219.5694 302.6865    30</span>
+<span class="co">#&gt;  hash_[[&lt;-  97.32129 134.29053 177.03302 173.76357 215.1939 285.4330    30</span>
+<span class="co">#&gt;   hash_[&lt;-  49.83696  63.59007  92.44493  85.72893 100.1953 193.3181    30</span></code></pre></div>
 <p>As it is seen, <code>r2r</code> and <code>hash</code> have comparable performances at the insertion of key-value pairs, with both vectorized and non-vectorized insertions, <code>hash</code> being somewhat more efficient in both cases.</p>
 </div>
 <div id="key-query" class="section level4">
 <h4 class="hasAnchor">
 <a href="#key-query" class="anchor"></a>Key query</h4>
 <p>We now test key query, again both in non-vectorized and vectorized form:</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/microbenchmark/man/microbenchmark.html">microbenchmark</a></span><span class="op">(</span>
     `r2r_[[` <span class="op">=</span> <span class="op">{</span> <span class="kw">for</span> <span class="op">(</span><span class="va">key</span> <span class="kw">in</span> <span class="va">keys</span><span class="op">)</span> <span class="va">m_r2r</span><span class="op">[[</span> <span class="va">key</span> <span class="op">]</span><span class="op">]</span> <span class="op">}</span>,
     `r2r_[` <span class="op">=</span> <span class="op">{</span> <span class="va">m_r2r</span><span class="op">[</span> <span class="va">keys</span> <span class="op">]</span> <span class="op">}</span>,
@@ -247,14 +223,14 @@
     <span class="op">}</span>
 <span class="op">)</span>
 <span class="co">#&gt; Unit: milliseconds</span>
-<span class="co">#&gt;     expr       min        lq      mean   median        uq       max neval</span>
-<span class="co">#&gt;   r2r_[[ 124.41550 158.41009 234.68613 219.7178 280.06516 433.84544    30</span>
-<span class="co">#&gt;    r2r_[ 107.52573 168.28981 203.09375 186.4675 234.35514 307.73533    30</span>
-<span class="co">#&gt;  hash_[[  14.39276  16.42108  22.15188  18.7731  26.51014  42.19047    30</span>
-<span class="co">#&gt;   hash_[  80.09756 107.12544 137.08032 138.2867 156.17361 222.73135    30</span></code></pre></div>
+<span class="co">#&gt;     expr       min        lq      mean    median        uq       max neval</span>
+<span class="co">#&gt;   r2r_[[ 118.58621 143.17374 182.51849 190.69377 211.10711 292.70654    30</span>
+<span class="co">#&gt;    r2r_[ 102.45992 144.51039 164.83150 162.54524 185.18080 295.50705    30</span>
+<span class="co">#&gt;  hash_[[  14.34971  14.84123  17.95533  16.11644  21.61073  25.59853    30</span>
+<span class="co">#&gt;   hash_[  76.57715  87.74981 113.03330 106.78102 134.94052 172.52844    30</span></code></pre></div>
 <p>For non-vectorized queries, <code>hash</code> is significantly faster (by one order of magnitude) than <code>r2r</code>. This is likely due to the fact that the <code><a href="https://rdrr.io/r/base/Extract.html">[[</a></code> method dispatch is handled natively by R in <code>hash</code> (<em>i.e.</em> the default <code><a href="https://rdrr.io/r/base/Extract.html">[[</a></code> method for <code>environment</code>s is used ), whereas <code>r2r</code> suffers the overhead of S3 method dispatch. This is confirmed by the result for vectorized queries, which is comparable for the two packages; notice that here a single (rather than <code>N</code>) S3 method dispatch occurs in the <code>r2r</code> timed expression.</p>
 <p>As an additional test, we perform the benchmarks for non-vectorized expressions with a new set of keys:</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">841</span><span class="op">)</span>
 <span class="va">new_keys</span> <span class="op">&lt;-</span> <span class="fu">random_keys</span><span class="op">(</span><span class="va">N</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/pkg/microbenchmark/man/microbenchmark.html">microbenchmark</a></span><span class="op">(</span>
@@ -268,11 +244,11 @@
     <span class="op">}</span>
 <span class="op">)</span>
 <span class="co">#&gt; Unit: milliseconds</span>
-<span class="co">#&gt;         expr      min        lq      mean    median        uq       max neval</span>
-<span class="co">#&gt;   r2r_[[_bis 88.04344 108.37945 150.32552 146.46155 173.69516 304.55331    30</span>
-<span class="co">#&gt;  hash_[[_bis 13.97895  16.16228  20.66769  20.64821  25.19673  29.14354    30</span></code></pre></div>
+<span class="co">#&gt;         expr      min       lq      mean    median        uq       max neval</span>
+<span class="co">#&gt;   r2r_[[_bis 85.84296 96.30374 122.83718 114.68296 143.98510 219.59569    30</span>
+<span class="co">#&gt;  hash_[[_bis 13.64392 13.98628  17.06765  15.73343  19.49865  24.18415    30</span></code></pre></div>
 <p>The results are similar to the ones already commented. Finally, we test the performances of the two packages in checking the existence of keys (notice that here <code>has_key</code> refers to <code><a href="../reference/has_key.html">r2r::has_key</a></code>, whereas <code>has.key</code> is <code><a href="https://rdrr.io/pkg/hash/man/has-key.html">hash::has.key</a></code>):</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">842</span><span class="op">)</span>
 <span class="va">mixed_keys</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">keys</span>, <span class="va">new_keys</span><span class="op">)</span>, <span class="va">N</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/pkg/microbenchmark/man/microbenchmark.html">microbenchmark</a></span><span class="op">(</span>
@@ -286,16 +262,16 @@
     <span class="op">}</span>
 <span class="op">)</span>
 <span class="co">#&gt; Unit: milliseconds</span>
-<span class="co">#&gt;          expr       min       lq     mean   median       uq      max neval</span>
-<span class="co">#&gt;   r2r_has_key  85.34432 102.2681 118.3204 115.2492 133.8587 172.1202    30</span>
-<span class="co">#&gt;  hash_has_key 230.26089 266.9852 307.4456 302.2927 340.3930 440.2632    30</span></code></pre></div>
+<span class="co">#&gt;          expr       min        lq     mean   median       uq      max neval</span>
+<span class="co">#&gt;   r2r_has_key  83.48655  94.15618 108.0726 102.7558 122.6928 152.1636    30</span>
+<span class="co">#&gt;  hash_has_key 212.76323 244.48166 280.4550 277.8113 318.5965 381.5606    30</span></code></pre></div>
 <p>The results are comparable for the two packages, <code>r2r</code> being slightly more performant in this particular case.</p>
 </div>
 <div id="key-deletion" class="section level4">
 <h4 class="hasAnchor">
 <a href="#key-deletion" class="anchor"></a>Key deletion</h4>
 <p>Finally, we test key deletion. In order to handle name collisions, we will use <code><a href="../reference/delete.html">delete()</a></code> (which refers to <code><a href="../reference/delete.html">r2r::delete()</a></code>) and <code><a href="https://rdrr.io/pkg/hash/man/del.html">del()</a></code> (which refers to <code><a href="https://rdrr.io/pkg/hash/man/del.html">hash::del()</a></code>).</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/microbenchmark/man/microbenchmark.html">microbenchmark</a></span><span class="op">(</span>
     r2r_delete <span class="op">=</span> <span class="op">{</span> <span class="kw">for</span> <span class="op">(</span><span class="va">key</span> <span class="kw">in</span> <span class="va">keys</span><span class="op">)</span> <span class="fu"><a href="../reference/delete.html">delete</a></span><span class="op">(</span><span class="va">m_r2r</span>, <span class="va">key</span><span class="op">)</span> <span class="op">}</span>,
     hash_delete <span class="op">=</span> <span class="op">{</span> <span class="kw">for</span> <span class="op">(</span><span class="va">key</span> <span class="kw">in</span> <span class="va">keys</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/pkg/hash/man/del.html">del</a></span><span class="op">(</span><span class="va">key</span>, <span class="va">m_hash</span><span class="op">)</span> <span class="op">}</span>,
@@ -308,14 +284,14 @@
     <span class="op">}</span>
 <span class="op">)</span>
 <span class="co">#&gt; Unit: milliseconds</span>
-<span class="co">#&gt;                    expr       min         lq       mean     median         uq</span>
-<span class="co">#&gt;              r2r_delete 421.72905 500.968650 576.373299 588.623429 639.586827</span>
-<span class="co">#&gt;             hash_delete 219.27461 255.236603 292.059086 286.194603 314.929970</span>
-<span class="co">#&gt;  hash_vectorized_delete   4.03723   4.619443   5.198281   5.275583   5.678301</span>
+<span class="co">#&gt;                    expr        min         lq       mean     median         uq</span>
+<span class="co">#&gt;              r2r_delete 401.813228 475.723885 566.586642 561.113000 647.662501</span>
+<span class="co">#&gt;             hash_delete 212.959727 252.918876 298.917537 285.520713 333.493209</span>
+<span class="co">#&gt;  hash_vectorized_delete   4.106485   4.613876   5.174436   4.964257   5.366749</span>
 <span class="co">#&gt;         max neval</span>
-<span class="co">#&gt;  757.238010    30</span>
-<span class="co">#&gt;  435.692299    30</span>
-<span class="co">#&gt;    6.876015    30</span></code></pre></div>
+<span class="co">#&gt;  793.653492    30</span>
+<span class="co">#&gt;  551.810192    30</span>
+<span class="co">#&gt;    9.033481    30</span></code></pre></div>
 <p>The vectorized version of <code>hash</code> significantly outperforms the non-vectorized versions (by roughly two orders of magnitude in speed). Currently, <code>r2r</code> does not support vectorized key deletion <a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>.</p>
 </div>
 </div>

@@ -17,7 +17,7 @@ knitr::opts_chunk$set(
 
 This vignette provides a comparison of `{r2r}` with the same-purpose CRAN package [`{hash}`](https://CRAN.R-project.org/package=hash), which also offers an implementation of hash tables based on R environments. We first describe the features offered by both packages, and then perform some benchmark timing comparisons. The package versions referred to in this vignette are:
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 library(hash)
 library(r2r)
 packageVersion("hash")
@@ -34,7 +34,7 @@ In contrast, hash tables in `hash` currently support only string keys, with basi
 
 The table below summarizes the features of the two packages
 
-```{r}
+```{r echo=FALSE}
 knitr::kable(
 	data.frame(
 		Feature = c(
