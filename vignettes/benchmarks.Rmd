@@ -1,0 +1,208 @@
+---
+title: "Comparison with `{hash}`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Comparison}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteDepends{microbenchmark, hash, datastructures}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+This vignette provides a comparison of `{r2r}` with the same-purpose CRAN package [`{hash}`](https://CRAN.R-project.org/package=hash), which also offers an implementation of hash tables based on R environments. We first describe the features offered by both packages, and then perform some benchmark timing comparisons. The package versions referred to in this vignette are:
+
+```{r}
+library(hash)
+library(r2r)
+packageVersion("hash")
+packageVersion("r2r")
+```
+
+## Features
+
+Both `{r2r}` and `{hash}` hash tables are built on top of the R built-in `environment` data structure, and have thus a similar API. In particular, hash table objects have reference semantics for both packages. `{r2r}` `hashtable`s are S3 class objects, whereas in `{hash}` the data structure is implemented as an S4 class.
+
+Hash tables provided by `r2r` support arbitrary type keys and values, arbitrary key comparison and hash functions, and have customizable behaviour (either throw an exception or return a default value) upon query of a missing key.
+
+In contrast, hash tables in `hash` currently support only string keys, with basic identity comparison (the hashing is performed automatically by the underlying `environment` objects); values can be arbitrary R objects. Querying missing keys through non-vectorized `[[`-subsetting returns the default value `NULL`, whereas queries through vectorized `[`-subsetting result in an error. On the other hand, `hash` also offers support for inverting hash tables (an experimental feature at the time of writing).
+
+The table below summarizes the features of the two packages
+
+```{r}
+knitr::kable(
+	data.frame(
+		Feature = c(
+			"Basic data structure",
+			"Arbitrary type keys", 
+			"Arbitrary type values",
+			"Arbitrary hash function",
+			"Arbitrary key comparison function",
+			"Throw or return default on missing keys",
+			"Hash table inversion"
+		),
+		r2r = c("R environment", "X", "X", "X", "X", "X", ""),
+		hash = c("R environment", "", "X", "", "", "", "X")
+		),
+	align = "c",
+	caption = "Features supported by {r2r} and {hash}"
+	)
+```
+
+## Performance tests
+
+We will perform our benchmark tests using the CRAN package [`microbenchmark`](https://CRAN.R-project.org/package=microbenchmark).
+
+```{r}
+library(microbenchmark)
+```
+
+
+#### Key insertion
+
+We start by timing the insertion of:
+
+```{r}
+N <- 1e4
+```
+
+random key-value pairs (with possible repetitions). In order to perform a meaningful comparison between the two packages, we restrict to string (*i.e.* length one character) keys. We can generate random keys as follows:
+
+```{r}
+chars <- c(letters, LETTERS, 0:9)
+random_keys <- function(n) paste0(
+	sample(chars, n, replace = TRUE),
+	sample(chars, n, replace = TRUE),
+	sample(chars, n, replace = TRUE),
+	sample(chars, n, replace = TRUE),
+	sample(chars, n, replace = TRUE)
+	)
+
+set.seed(840)
+keys <- random_keys(N)
+values <- rnorm(N)
+
+```
+
+We test both the non-vectorized (`[[<-`) and vectorized (`[<-`) operators:
+
+```{r}
+microbenchmark(
+	`r2r_[[<-` = {
+		for (i in seq_along(keys))
+			m_r2r[[ keys[[i]] ]] <- values[[i]]
+	},
+	`r2r_[<-` = { m_r2r[keys] <- values },
+	`hash_[[<-` = { 
+		for (i in seq_along(keys))
+			m_hash[[ keys[[i]] ]] <- values[[i]]
+	},
+	`hash_[<-` = m_hash[keys] <- values,
+	
+	times = 30, 
+	setup = { m_r2r <- hashmap(); m_hash <- hash() }
+)
+```
+
+As it is seen, `r2r` and `hash` have comparable performances at the insertion of 
+key-value pairs, with both vectorized and non-vectorized insertions, `hash` 
+being somewhat more efficient in both cases.
+
+#### Key query
+
+We now test key query, again both in non-vectorized and vectorized form:
+
+```{r}
+microbenchmark(
+	`r2r_[[` = { for (key in keys) m_r2r[[ key ]] },
+	`r2r_[` = { m_r2r[ keys ] },
+	`hash_[[` = { for (key in keys) m_hash[[ key ]] },
+	`hash_[` = { m_hash[ keys ] },
+	
+	times = 30,
+	setup = { 
+		m_r2r <- hashmap(); m_r2r[keys] <- values
+		m_hash <- hash(); m_hash[keys] <- values
+	}
+)
+```
+
+For non-vectorized queries, `hash` is significantly faster (by one order of magnitude) 
+than `r2r`. This is likely due to the fact that the `[[` method dispatch is 
+handled natively by R in `hash` (*i.e.* the default `[[` method for `environment`s is used
+), whereas `r2r` suffers the overhead of S3 method dispatch. This is confirmed by 
+the result for vectorized queries, which is comparable for the two packages; notice 
+that here a single (rather than `N`) S3 method dispatch occurs in the `r2r` timed 
+expression.
+
+As an additional test, we perform the benchmarks for non-vectorized expressions 
+with a new set of keys:
+
+```{r}
+set.seed(841)
+new_keys <- random_keys(N)
+microbenchmark(
+	`r2r_[[_bis` = { for (key in new_keys) m_r2r[[ key ]] },
+	`hash_[[_bis` = { for (key in new_keys) m_hash[[ key ]] },
+	
+	times = 30,
+	setup = { 
+		m_r2r <- hashmap(); m_r2r[keys] <- values
+		m_hash <- hash(); m_hash[keys] <- values
+	}
+)
+```
+
+The results are similar to the ones already commented. Finally, we test the 
+performances of the two packages in checking the existence of keys (notice that 
+here `has_key` refers to `r2r::has_key`, whereas `has.key` is `hash::has.key`):
+
+```{r}
+set.seed(842)
+mixed_keys <- sample(c(keys, new_keys), N)
+microbenchmark(
+	r2r_has_key = { for (key in mixed_keys) has_key(m_r2r, key) },
+	hash_has_key = { for (key in new_keys) has.key(key, m_hash) },
+	
+	times = 30,
+	setup = { 
+		m_r2r <- hashmap(); m_r2r[keys] <- values
+		m_hash <- hash(); m_hash[keys] <- values
+	}
+)
+```
+
+The results are comparable for the two packages, `r2r` being slightly more 
+performant in this particular case.
+
+#### Key deletion
+
+Finally, we test key deletion. In order to handle name collisions, we will use `delete()` 
+(which refers to `r2r::delete()`) and `del()` (which refers to `hash::del()`).
+
+```{r}
+microbenchmark(
+	r2r_delete = { for (key in keys) delete(m_r2r, key) },
+	hash_delete = { for (key in keys) del(key, m_hash) },
+	hash_vectorized_delete = { del(keys, m_hash) },
+	
+	times = 30,
+	setup = { 
+		m_r2r <- hashmap(); m_r2r[keys] <- values
+		m_hash <- hash(); m_hash[keys] <- values
+	}
+)
+```
+
+The vectorized version of `hash` significantly outperforms the non-vectorized versions (by roughly two orders of magnitude in speed). Currently, `r2r` does not support vectorized key deletion [^1].
+
+## Conclusions
+
+The two R packages `r2r` and `hash` offer hash table implementations with different advantages and drawbacks. `r2r` focuses on flexibility, and has a richer set of features. `hash` is more minimal, but offers superior performance in some important tasks. Finally, as a positive note for both parties, the two packages share a similar API, making it relatively easy to switch between the two, according to the particular use case needs.
+
+[^1]: This is due to complications introduced by the internal hash collision handling system of `r2r`.

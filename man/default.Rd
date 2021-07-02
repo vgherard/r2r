@@ -22,7 +22,7 @@ default(x) <- value
 keys in the \code{hashmap}.}
 }
 \value{
-an arbitrary R objec.
+an arbitrary R object.
 }
 \description{
 These generics are used to get or set the default value of an

@@ -49,6 +49,18 @@
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+<li>
+      <a href="../articles/benchmarks.html">Comparison with `{hash}`</a>
+    </li>
+  </ul>
+</li>
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
@@ -85,7 +97,13 @@
 <a href="#introduction" class="anchor"></a>Introduction</h2>
 <p><a href="https://en.wikipedia.org/wiki/Hash_table">Hash tables</a> are among the most useful data structures for efficient coding. An hash table can be abstractly thought as a map from a set of unique keys (which may be strings, numbers, or even more complicated objects) to a set of values. From a computational viewpoint, its most distinctive feature is that its read/write operations (<em>i.e.</em> storing, retrieving or deleting a particular key or key-value pair) have average <span class="math inline">\(O(1)\)</span> time complexity, independent of the table size.</p>
 <p>Many programming languages come with their own native implementation of hash tables (for instance <code>std::unordered_map/set</code>s in C++, or <code>dict</code>s and <code>set</code>s in Python); in base R, the objects which come closest to hash tables are <code>environment</code>s. These, however, can be somewhat cumbersome to handle from the user point of view, and only support string type keys. The purpose of <a href="https://github.com/vgherard/r2r">r2r</a> is to provide a more flexible implementation of hash tables in R, building on top of base R <code>environment</code>s.</p>
-<p>In particular, <code>r2r</code> hash tables support: - arbitrary R objects as keys and values, - arbitrary key comparison and hash functions, - customizable behaviour (throw or return a default value) on missing key exceptions. This document provides a quick hands-on introduction to <code>r2r</code> hash tables.</p>
+<p>In particular, <code>r2r</code> hash tables support:</p>
+<ul>
+<li>arbitrary R objects as keys and values,</li>
+<li>arbitrary key comparison and hash functions,</li>
+<li>customizable behaviour (throw or return a default value) on missing key exceptions.</li>
+</ul>
+<p>This document provides a quick hands-on introduction to <code>r2r</code> hash tables.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/vgherard/r2r">r2r</a></span><span class="op">)</span></code></pre></div>
 </div>

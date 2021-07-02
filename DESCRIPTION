@@ -20,6 +20,8 @@ Suggests:
     knitr,
     covr,
     testthat (>= 3.0.0),
-    rmarkdown
+    rmarkdown,
+    microbenchmark,
+    hash
 Config/testthat/edition: 3
 VignetteBuilder: knitr

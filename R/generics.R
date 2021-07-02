@@ -215,7 +215,7 @@ on_missing_key <- function(x)
 #' @description These generics are used to get or set the default value of an
 #'  \code{hashmap}, optionally returned upon query of a missing key.
 #' @param x an \code{hashmap}.
-#' @return an arbitrary R objec.
+#' @return an arbitrary R object.
 #' @details For more details, see the \link{hashtable} documentation page.
 #' @examples
 #' m <- hashmap()

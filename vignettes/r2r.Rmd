@@ -21,9 +21,11 @@ knitr::opts_chunk$set(
 Many programming languages come with their own native implementation of hash tables (for instance `std::unordered_map/set`s in C++, or `dict`s and `set`s in Python); in base R, the objects which come closest to hash tables are `environment`s. These, however, can be somewhat cumbersome to handle from the user point of view, and only support string type keys. The purpose of `{r2r}` is to provide a more flexible implementation of hash tables in R, building on top of base R `environment`s.
 
 In particular, `r2r` hash tables support:
+
 - arbitrary R objects as keys and values,
 - arbitrary key comparison and hash functions,
 - customizable behaviour (throw or return a default value) on missing key exceptions.
+
 This document provides a quick hands-on introduction to `r2r` hash tables. 
 
 ```{r setup}

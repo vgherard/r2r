@@ -61,3 +61,43 @@ features of `r2r` hash maps, you can consult the `r2r`
 [website](https://vgherard.github.io/r2r/). If you encounter a bug, want
 to suggest a feature or need further help, you can [open a GitHub
 issue](https://github.com/vgherard/r2r/issues).
+
+## Comparison with `hash`
+
+CRAN package [`{hash}`](https://CRAN.R-project.org/package=hash) also
+offers an implementation of hash tables based on R environments. The two
+tables below offer a comparison between `{r2r}` and `{hash}` (for more
+details, see the [benchmarks](https://vgherard.github.io/r2r/benchmarks)
+Vignette)
+
+``` r
+knitr::kable(
+    data.frame(
+        Feature = c(
+            "Basic data structure",
+            "Arbitrary type keys", 
+            "Arbitrary type values",
+            "Arbitrary hash function",
+            "Arbitrary key comparison function",
+            "Throw or return default on missing keys",
+            "Hash table inversion"
+        ),
+        r2r = c("R environment", "X", "X", "X", "X", "X", ""),
+        hash = c("R environment", "", "X", "", "", "", "X")
+        ),
+    align = "c",
+    caption = "Features supported by {r2r} and {hash}"
+    )
+```
+
+|                 Feature                 |      r2r      |     hash      |
+|:---------------------------------------:|:-------------:|:-------------:|
+|          Basic data structure           | R environment | R environment |
+|           Arbitrary type keys           |       X       |               |
+|          Arbitrary type values          |       X       |       X       |
+|         Arbitrary hash function         |       X       |               |
+|    Arbitrary key comparison function    |       X       |               |
+| Throw or return default on missing keys |       X       |               |
+|          Hash table inversion           |               |       X       |
+
+Features supported by {r2r} and {hash}
