@@ -86,7 +86,7 @@
 <a href="#r2r" class="anchor"></a>r2r</h1></div>
 <!-- badges: start -->
 
-<p><code>r2r</code> provides a flexible implementation of hash tables in R, allowing for:</p>
+<p><a href="https://vgherard.github.io/r2r/"><code>r2r</code></a> provides a flexible implementation of hash tables in R, allowing for:</p>
 <ul>
 <li>arbitrary R objects as keys and values,</li>
 <li>arbitrary key comparison and hash functions,</li>
@@ -130,6 +130,78 @@
 <h2 class="hasAnchor">
 <a href="#getting-help" class="anchor"></a>Getting help</h2>
 <p>For further details, including an introductory vignette illustrating the features of <code>r2r</code> hash maps, you can consult the <code>r2r</code> <a href="https://vgherard.github.io/r2r/">website</a>. If you encounter a bug, want to suggest a feature or need further help, you can <a href="https://github.com/vgherard/r2r/issues">open a GitHub issue</a>.</p>
+</div>
+<div id="comparison-with-hash" class="section level2">
+<h2 class="hasAnchor">
+<a href="#comparison-with-hash" class="anchor"></a>Comparison with <code>hash</code>
+</h2>
+<p>CRAN package <a href="https://CRAN.R-project.org/package=hash"><code>{hash}</code></a> also offers an implementation of hash tables based on R environments. The two tables below offer a comparison between <a href="https://github.com/vgherard/r2r">r2r</a> and <code>{hash}</code> (for more details, see the <a href="https://vgherard.github.io/r2r/articles/benchmarks.html">benchmarks</a> Vignette)</p>
+<table class="table">
+<thead><tr class="header">
+<th align="center">Feature</th>
+<th align="center">r2r</th>
+<th align="center">hash</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="center">Basic data structure</td>
+<td align="center">R environment</td>
+<td align="center">R environment</td>
+</tr>
+<tr class="even">
+<td align="center">Arbitrary type keys</td>
+<td align="center">X</td>
+<td align="center"></td>
+</tr>
+<tr class="odd">
+<td align="center">Arbitrary type values</td>
+<td align="center">X</td>
+<td align="center">X</td>
+</tr>
+<tr class="even">
+<td align="center">Arbitrary hash function</td>
+<td align="center">X</td>
+<td align="center"></td>
+</tr>
+<tr class="odd">
+<td align="center">Arbitrary key comparison function</td>
+<td align="center">X</td>
+<td align="center"></td>
+</tr>
+<tr class="even">
+<td align="center">Throw or return default on missing keys</td>
+<td align="center">X</td>
+<td align="center"></td>
+</tr>
+<tr class="odd">
+<td align="center">Hash table inversion</td>
+<td align="center"></td>
+<td align="center">X</td>
+</tr>
+</tbody>
+</table>
+<p>Features supported by {r2r} and {hash}.</p>
+<table class="table">
+<thead><tr class="header">
+<th align="center">Task</th>
+<th align="center">Comparison</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="center">Key insertion</td>
+<td align="center">{r2r} ~ {hash}</td>
+</tr>
+<tr class="even">
+<td align="center">Key query</td>
+<td align="center">{r2r} &lt; {hash}</td>
+</tr>
+<tr class="odd">
+<td align="center">Key deletion</td>
+<td align="center">{r2r} &lt;&lt; {hash}</td>
+</tr>
+</tbody>
+</table>
+<p>Performances of {r2r} and {hash} for basic hash table operations.</p>
 </div>
 </div>
   </div>

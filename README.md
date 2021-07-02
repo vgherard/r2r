@@ -10,8 +10,8 @@
 coverage](https://codecov.io/gh/vgherard/r2r/branch/master/graph/badge.svg)](https://codecov.io/gh/vgherard/r2r?branch=master)
 <!-- badges: end -->
 
-`r2r` provides a flexible implementation of hash tables in R, allowing
-for:
+[`r2r`](https://vgherard.github.io/r2r/) provides a flexible
+implementation of hash tables in R, allowing for:
 
 -   arbitrary R objects as keys and values,
 -   arbitrary key comparison and hash functions,
@@ -67,28 +67,9 @@ issue](https://github.com/vgherard/r2r/issues).
 CRAN package [`{hash}`](https://CRAN.R-project.org/package=hash) also
 offers an implementation of hash tables based on R environments. The two
 tables below offer a comparison between `{r2r}` and `{hash}` (for more
-details, see the [benchmarks](https://vgherard.github.io/r2r/benchmarks)
+details, see the
+[benchmarks](https://vgherard.github.io/r2r/articles/benchmarks.html)
 Vignette)
-
-``` r
-knitr::kable(
-    data.frame(
-        Feature = c(
-            "Basic data structure",
-            "Arbitrary type keys", 
-            "Arbitrary type values",
-            "Arbitrary hash function",
-            "Arbitrary key comparison function",
-            "Throw or return default on missing keys",
-            "Hash table inversion"
-        ),
-        r2r = c("R environment", "X", "X", "X", "X", "X", ""),
-        hash = c("R environment", "", "X", "", "", "", "X")
-        ),
-    align = "c",
-    caption = "Features supported by {r2r} and {hash}"
-    )
-```
 
 |                 Feature                 |      r2r      |     hash      |
 |:---------------------------------------:|:-------------:|:-------------:|
@@ -100,4 +81,12 @@ knitr::kable(
 | Throw or return default on missing keys |       X       |               |
 |          Hash table inversion           |               |       X       |
 
-Features supported by {r2r} and {hash}
+Features supported by {r2r} and {hash}.
+
+|     Task      |      Comparison       |
+|:-------------:|:---------------------:|
+| Key insertion |    {r2r} \~ {hash}    |
+|   Key query   |   {r2r} &lt; {hash}   |
+| Key deletion  | {r2r} &lt;&lt; {hash} |
+
+Performances of {r2r} and {hash} for basic hash table operations.

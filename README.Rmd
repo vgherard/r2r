@@ -20,7 +20,7 @@ knitr::opts_chunk$set(
 [![Codecov test coverage](https://codecov.io/gh/vgherard/r2r/branch/master/graph/badge.svg)](https://codecov.io/gh/vgherard/r2r?branch=master)
 <!-- badges: end -->
 
-`r2r` provides a flexible implementation of hash tables in R, allowing for:
+[`r2r`](https://vgherard.github.io/r2r/) provides a flexible implementation of hash tables in R, allowing for:
 
 - arbitrary R objects as keys and values,
 - arbitrary key comparison and hash functions,
@@ -59,9 +59,9 @@ For further details, including an introductory vignette illustrating the feature
 
 ## Comparison with `hash`
 
-CRAN package [`{hash}`](https://CRAN.R-project.org/package=hash) also offers an implementation of hash tables based on R environments. The two tables below offer a comparison between `{r2r}` and `{hash}` (for more details, see the [benchmarks](https://vgherard.github.io/r2r/benchmarks) Vignette)
+CRAN package [`{hash}`](https://CRAN.R-project.org/package=hash) also offers an implementation of hash tables based on R environments. The two tables below offer a comparison between `{r2r}` and `{hash}` (for more details, see the [benchmarks](https://vgherard.github.io/r2r/articles/benchmarks.html) Vignette)
 
-```{r}
+```{r echo=FALSE}
 knitr::kable(
 	data.frame(
 		Feature = c(
@@ -77,7 +77,25 @@ knitr::kable(
 		hash = c("R environment", "", "X", "", "", "", "X")
 		),
 	align = "c",
-	caption = "Features supported by {r2r} and {hash}"
+	caption = "Features supported by {r2r} and {hash}."
 	)
 ```
 
+```{r echo=FALSE}
+knitr::kable(
+	data.frame(
+		Task = c(
+			"Key insertion",
+			"Key query",
+			"Key deletion"
+			),
+		Comparison = c(
+			"{r2r} ~ {hash}",
+			"{r2r} < {hash}",
+			"{r2r} << {hash}"
+			)
+		),
+	align = "c",
+	caption = "Performances of {r2r} and {hash} for basic hash table operations."
+	)
+```
