@@ -5,7 +5,7 @@ vignette: >
   %\VignetteIndexEntry{Comparison}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
-  %\VignetteDepends{microbenchmark, hash, datastructures}
+  %\VignetteDepends{microbenchmark, hash}
 ---
 
 ```{r, include = FALSE}
