@@ -7,7 +7,11 @@ Authors@R:
            role = c("aut", "cre"),
            email = "vgherard@sissa.it",
            comment = c(ORCID = "0000-0002-8215-3013"))
-Description: Hash table implementation with arbitrary R objects as keys.
+Description: 
+	Implementation of hash tables (hash sets and hash maps) in R, 
+	featuring arbitrary R objects as keys, 
+	arbitrary hash and key-comparison functions, 
+	and customizable behaviour upon queries of missing keys.
 License: GPL (>= 3)
 Encoding: UTF-8
 LazyData: true
