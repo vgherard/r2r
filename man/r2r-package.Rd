@@ -6,7 +6,10 @@
 \alias{r2r-package}
 \title{r2r: R-Object to R-Object Hash Maps}
 \description{
-Hash table implementation with arbitrary R objects as keys.
+Implementation of hash tables (hash sets and hash maps) in R, 
+	featuring arbitrary R objects as keys, 
+	arbitrary hash and key-comparison functions, 
+	and customizable behaviour upon queries of missing keys.
 }
 \seealso{
 Useful links:
