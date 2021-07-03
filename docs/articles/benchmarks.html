@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">r2r</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
       </span>
     </div>
 
@@ -100,7 +100,7 @@
 <span class="fu"><a href="https://rdrr.io/r/utils/packageDescription.html">packageVersion</a></span><span class="op">(</span><span class="st">"hash"</span><span class="op">)</span>
 <span class="co">#&gt; [1] '2.2.6.1'</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/packageDescription.html">packageVersion</a></span><span class="op">(</span><span class="st">"r2r"</span><span class="op">)</span>
-<span class="co">#&gt; [1] '0.0.0.9000'</span></code></pre></div>
+<span class="co">#&gt; [1] '0.1.0'</span></code></pre></div>
 <div id="features" class="section level2">
 <h2 class="hasAnchor">
 <a href="#features" class="anchor"></a>Features</h2>
@@ -199,10 +199,10 @@
 <span class="op">)</span>
 <span class="co">#&gt; Unit: milliseconds</span>
 <span class="co">#&gt;       expr       min        lq      mean    median       uq      max neval</span>
-<span class="co">#&gt;   r2r_[[&lt;- 106.75810 140.69350 194.64487 183.96862 234.6608 360.4883    30</span>
-<span class="co">#&gt;    r2r_[&lt;- 102.71972 148.61470 183.65961 170.90279 219.5694 302.6865    30</span>
-<span class="co">#&gt;  hash_[[&lt;-  97.32129 134.29053 177.03302 173.76357 215.1939 285.4330    30</span>
-<span class="co">#&gt;   hash_[&lt;-  49.83696  63.59007  92.44493  85.72893 100.1953 193.3181    30</span></code></pre></div>
+<span class="co">#&gt;   r2r_[[&lt;- 106.44872 143.79311 203.21391 199.75099 259.9893 337.4221    30</span>
+<span class="co">#&gt;    r2r_[&lt;- 104.76128 155.17400 180.57856 175.25266 204.8157 283.4741    30</span>
+<span class="co">#&gt;  hash_[[&lt;- 109.41609 150.05945 182.48662 187.87517 211.4858 250.5745    30</span>
+<span class="co">#&gt;   hash_[&lt;-  50.54152  68.46857  93.13881  83.19777 116.2621 175.5909    30</span></code></pre></div>
 <p>As it is seen, <code>r2r</code> and <code>hash</code> have comparable performances at the insertion of key-value pairs, with both vectorized and non-vectorized insertions, <code>hash</code> being somewhat more efficient in both cases.</p>
 </div>
 <div id="key-query" class="section level4">
@@ -224,10 +224,10 @@
 <span class="op">)</span>
 <span class="co">#&gt; Unit: milliseconds</span>
 <span class="co">#&gt;     expr       min        lq      mean    median        uq       max neval</span>
-<span class="co">#&gt;   r2r_[[ 118.58621 143.17374 182.51849 190.69377 211.10711 292.70654    30</span>
-<span class="co">#&gt;    r2r_[ 102.45992 144.51039 164.83150 162.54524 185.18080 295.50705    30</span>
-<span class="co">#&gt;  hash_[[  14.34971  14.84123  17.95533  16.11644  21.61073  25.59853    30</span>
-<span class="co">#&gt;   hash_[  76.57715  87.74981 113.03330 106.78102 134.94052 172.52844    30</span></code></pre></div>
+<span class="co">#&gt;   r2r_[[ 121.99428 171.71890 215.39957 207.11233 254.14072 332.66066    30</span>
+<span class="co">#&gt;    r2r_[ 105.75163 155.65949 200.18942 186.08475 225.91473 344.56430    30</span>
+<span class="co">#&gt;  hash_[[  15.05007  16.50855  24.12385  21.83258  27.52844  49.49833    30</span>
+<span class="co">#&gt;   hash_[  83.15599 104.54264 136.88741 128.19978 145.89483 322.86640    30</span></code></pre></div>
 <p>For non-vectorized queries, <code>hash</code> is significantly faster (by one order of magnitude) than <code>r2r</code>. This is likely due to the fact that the <code><a href="https://rdrr.io/r/base/Extract.html">[[</a></code> method dispatch is handled natively by R in <code>hash</code> (<em>i.e.</em> the default <code><a href="https://rdrr.io/r/base/Extract.html">[[</a></code> method for <code>environment</code>s is used ), whereas <code>r2r</code> suffers the overhead of S3 method dispatch. This is confirmed by the result for vectorized queries, which is comparable for the two packages; notice that here a single (rather than <code>N</code>) S3 method dispatch occurs in the <code>r2r</code> timed expression.</p>
 <p>As an additional test, we perform the benchmarks for non-vectorized expressions with a new set of keys:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
@@ -244,9 +244,9 @@
     <span class="op">}</span>
 <span class="op">)</span>
 <span class="co">#&gt; Unit: milliseconds</span>
-<span class="co">#&gt;         expr      min       lq      mean    median        uq       max neval</span>
-<span class="co">#&gt;   r2r_[[_bis 85.84296 96.30374 122.83718 114.68296 143.98510 219.59569    30</span>
-<span class="co">#&gt;  hash_[[_bis 13.64392 13.98628  17.06765  15.73343  19.49865  24.18415    30</span></code></pre></div>
+<span class="co">#&gt;         expr       min        lq      mean    median        uq       max neval</span>
+<span class="co">#&gt;   r2r_[[_bis 101.77012 131.87861 160.81288 152.61639 190.68888 263.57906    30</span>
+<span class="co">#&gt;  hash_[[_bis  14.11926  14.94519  19.51311  17.58655  21.71656  33.03463    30</span></code></pre></div>
 <p>The results are similar to the ones already commented. Finally, we test the performances of the two packages in checking the existence of keys (notice that here <code>has_key</code> refers to <code><a href="../reference/has_key.html">r2r::has_key</a></code>, whereas <code>has.key</code> is <code><a href="https://rdrr.io/pkg/hash/man/has-key.html">hash::has.key</a></code>):</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">842</span><span class="op">)</span>
@@ -262,9 +262,9 @@
     <span class="op">}</span>
 <span class="op">)</span>
 <span class="co">#&gt; Unit: milliseconds</span>
-<span class="co">#&gt;          expr       min        lq     mean   median       uq      max neval</span>
-<span class="co">#&gt;   r2r_has_key  83.48655  94.15618 108.0726 102.7558 122.6928 152.1636    30</span>
-<span class="co">#&gt;  hash_has_key 212.76323 244.48166 280.4550 277.8113 318.5965 381.5606    30</span></code></pre></div>
+<span class="co">#&gt;          expr       min       lq     mean   median       uq      max neval</span>
+<span class="co">#&gt;   r2r_has_key  82.55365 104.4034 135.6402 128.3502 164.0346 202.0544    30</span>
+<span class="co">#&gt;  hash_has_key 238.70728 324.4050 368.1100 352.6966 414.2728 536.8667    30</span></code></pre></div>
 <p>The results are comparable for the two packages, <code>r2r</code> being slightly more performant in this particular case.</p>
 </div>
 <div id="key-deletion" class="section level4">
@@ -284,14 +284,14 @@
     <span class="op">}</span>
 <span class="op">)</span>
 <span class="co">#&gt; Unit: milliseconds</span>
-<span class="co">#&gt;                    expr        min         lq       mean     median         uq</span>
-<span class="co">#&gt;              r2r_delete 401.813228 475.723885 566.586642 561.113000 647.662501</span>
-<span class="co">#&gt;             hash_delete 212.959727 252.918876 298.917537 285.520713 333.493209</span>
-<span class="co">#&gt;  hash_vectorized_delete   4.106485   4.613876   5.174436   4.964257   5.366749</span>
-<span class="co">#&gt;         max neval</span>
-<span class="co">#&gt;  793.653492    30</span>
-<span class="co">#&gt;  551.810192    30</span>
-<span class="co">#&gt;    9.033481    30</span></code></pre></div>
+<span class="co">#&gt;                    expr      min        lq       mean     median         uq</span>
+<span class="co">#&gt;              r2r_delete 441.9607 529.17870 627.749391 629.890169 694.753358</span>
+<span class="co">#&gt;             hash_delete 225.3288 262.39956 329.469227 335.950890 379.410199</span>
+<span class="co">#&gt;  hash_vectorized_delete   4.1613   4.69638   5.633771   5.352575   5.997235</span>
+<span class="co">#&gt;        max neval</span>
+<span class="co">#&gt;  825.10178    30</span>
+<span class="co">#&gt;  447.90228    30</span>
+<span class="co">#&gt;   11.75633    30</span></code></pre></div>
 <p>The vectorized version of <code>hash</code> significantly outperforms the non-vectorized versions (by roughly two orders of magnitude in speed). Currently, <code>r2r</code> does not support vectorized key deletion <a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>.</p>
 </div>
 </div>
