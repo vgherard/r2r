@@ -75,7 +75,7 @@ delete() and query()." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">r2r</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.1</span>
       </span>
     </div>
 
@@ -188,6 +188,17 @@ keys in the hash table.</p></td>
     </tr>
     </table>
 
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>the replacement forms (<code>[[&lt;-</code> and <code>[&lt;-</code>) always return <code>value</code>.
+<code><a href='https://rdrr.io/r/base/Extract.html'>`[[`</a></code> returns <code>TRUE</code> or <code>FALSE</code> if
+<code>x</code> is an <code>hashset</code>, an arbitrary R object if <code>x</code> is an
+<code>hashmap</code> and <code>i</code> is a valid key; when <code>i</code> is not a key, the
+behaviour for <code>hashmap</code>s depends on the value of
+<code><a href='on_missing_key.html'>on_missing_key</a>(x)</code>.
+The <code><a href='https://rdrr.io/r/base/Extract.html'>`[`</a></code> operator returns a list of the same length of <code>i</code>, whose
+k-th element is given by <code>x[[ i[[k]] ]]</code> (the remark on missing keys for
+hashmaps applies also here).</p>
     <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
 
     <p>Valerio Gherardi</p>
