@@ -1,4 +1,25 @@
-# Comments for CRAN submission of r2r (v0.1.0)
+# Comments for CRAN submission of r2r (v0.1.1)
+
+### Comments for resubmission (v2)
+
+From the CRAN staff's review:
+	
+	Missing Rd-tags:
+		hashtable_methods.Rd:  \value
+		hashtable_properties.Rd: \value
+		subsetting_hashtables.Rd: \value
+	
+	Please fix and resubmit.
+	
+For the `subsetting_hashtables` documentation entry this was a typo in 
+roxygen code, and has been fixed.
+
+The entry `hashtable_properties` was spurious and has been eliminated.
+
+The `hashtable_methods` entry, however, does not document any specific function,
+but rather provides a global overview of the methods for the S3 classes exported
+by the package. As such, a \\value tag is in my opinion not appropriate here.
+
 
 ### Test environments
 * local: 
