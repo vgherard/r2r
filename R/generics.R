@@ -137,16 +137,6 @@ has_key <- function(x, key)
 #' @export
 `%has_key%` <- has_key
 
-#' @title Hash table properties
-#'
-#' @author Valerio Gherardi
-#'
-#' @description This generics are used to get and (where allowed) set various
-#' properties of \code{hashset} and \code{hashmap} objects.
-#' @param x an \code{hashset} or \code{hashmap}.
-#' @name hashtable_properties
-NULL
-
 #' @title Get hash function of an hash table
 #'
 #' @author Valerio Gherardi
