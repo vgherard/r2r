@@ -34,16 +34,26 @@
 \item{i}{for \code{`[[`}-subsetting, an arbitrary R object, the key to be
 queried or inserted/deleted from the hash tables. For \code{`[`}-subsetting,
 a list or an atomic vector whose individual elements correspond to the keys.}
-}
-\value{
-for \code{`[[`}-subsetting: \code{TRUE} or \code{FALSE} if
+
+\item{value}{for \code{`[[`}-subsetting: \code{TRUE} or \code{FALSE} if
 \code{x} is an \code{hashset}, an arbitrary R object if \code{x} is an
 \code{hashmap}. In the case of \code{hashset}s, setting a key's value to
 \code{TRUE} and \code{FALSE} is equivalent to inserting and deleting,
 respectively, such key from the set. For \code{`[`}-subsetting, \code{value}
 must be a list or an atomic vector of the same length of \code{i},
 whose individual elements are the values associated to the corresponding
-keys in the hash table.
+keys in the hash table.}
+}
+\value{
+the replacement forms (\verb{[[<-} and \verb{[<-}) always return \code{value}.
+\code{`[[`} returns \code{TRUE} or \code{FALSE} if
+\code{x} is an \code{hashset}, an arbitrary R object if \code{x} is an
+\code{hashmap} and \code{i} is a valid key; when \code{i} is not a key, the
+behaviour for \code{hashmap}s depends on the value of
+\code{\link{on_missing_key}(x)}.
+The \code{`[`} operator returns a list of the same length of \code{i}, whose
+k-th element is given by \code{x[[ i[[k]] ]]} (the remark on missing keys for
+hashmaps applies also here).
 }
 \description{
 Subsetting operators \code{`[[`} and \code{`[`} for

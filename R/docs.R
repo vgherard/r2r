@@ -128,7 +128,7 @@ NULL
 #' @param i for \code{`[[`}-subsetting, an arbitrary R object, the key to be
 #' queried or inserted/deleted from the hash tables. For \code{`[`}-subsetting,
 #' a list or an atomic vector whose individual elements correspond to the keys.
-#' @return for \code{`[[`}-subsetting: \code{TRUE} or \code{FALSE} if
+#' @param value for \code{`[[`}-subsetting: \code{TRUE} or \code{FALSE} if
 #' \code{x} is an \code{hashset}, an arbitrary R object if \code{x} is an
 #' \code{hashmap}. In the case of \code{hashset}s, setting a key's value to
 #' \code{TRUE} and \code{FALSE} is equivalent to inserting and deleting,
@@ -136,5 +136,14 @@ NULL
 #' must be a list or an atomic vector of the same length of \code{i},
 #' whose individual elements are the values associated to the corresponding
 #' keys in the hash table.
+#' @return the replacement forms (`[[<-` and `[<-`) always return `value`.
+#' \code{`[[`} returns \code{TRUE} or \code{FALSE} if
+#' \code{x} is an \code{hashset}, an arbitrary R object if \code{x} is an
+#' \code{hashmap} and \code{i} is a valid key; when \code{i} is not a key, the
+#' behaviour for \code{hashmap}s depends on the value of
+#' \code{\link{on_missing_key}(x)}.
+#' The \code{`[`} operator returns a list of the same length of \code{i}, whose
+#' k-th element is given by \code{x[[ i[[k]] ]]} (the remark on missing keys for
+#' hashmaps applies also here).
 #' @name subsetting_hashtables
 NULL
