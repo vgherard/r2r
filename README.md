@@ -22,12 +22,18 @@ implementation of hash tables in R, allowing for:
 
 ## Installation
 
-You can install the development version of `r2r` from
-[GitHub](https://github.com/vgherard/r2r) with:
+You can install the released version of `r2r` from
+[CRAN](https://CRAN.R-project.org/package=r2r) with:
 
 ``` r
-# install.packages("devtools")
-devtools::install_github("vgherard/r2r")
+install.packages("r2r")
+```
+
+and the development version from [my R-universe
+repository](https://vgherard.r-universe.dev/), with:
+
+``` r
+install.packages("r2r", repos = "https://vgherard.r-universe.dev")
 ```
 
 ## Usage

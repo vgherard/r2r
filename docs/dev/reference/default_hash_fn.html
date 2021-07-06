@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Authors • r2r</title>
+<title>String hashes for arbitrary R objects — default_hash_fn • r2r</title>
 
 
 <!-- jquery -->
@@ -18,8 +18,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
 
 <!-- bootstrap-toc -->
-<link rel="stylesheet" href="bootstrap-toc.css">
-<script src="bootstrap-toc.js"></script>
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
@@ -33,16 +33,19 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
-<link href="pkgdown.css" rel="stylesheet">
-<script src="pkgdown.js"></script>
+<link href="../pkgdown.css" rel="stylesheet">
+<script src="../pkgdown.js"></script>
 
 
 
 
-<meta property="og:title" content="Authors" />
+<meta property="og:title" content="String hashes for arbitrary R objects — default_hash_fn" />
+<meta property="og:description" content="generates string hashes for arbitrary R objects as follows.
+This is the default hash function used by hashsets and hashmaps
+objects." />
 
 
-
+<meta name="robots" content="noindex">
 
 <!-- mathjax -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
@@ -58,7 +61,7 @@
   </head>
 
   <body data-spy="scroll" data-target="#toc">
-    <div class="container template-authors">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -70,24 +73,24 @@
         <span class="icon-bar"></span>
       </button>
       <span class="navbar-brand">
-        <a class="navbar-link" href="index.html">r2r</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.1.9000</span>
+        <a class="navbar-link" href="../index.html">r2r</a>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.1.1.9000</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="index.html">
+  <a href="../index.html">
     <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
 <li>
-  <a href="articles/r2r.html">Get started</a>
+  <a href="../articles/r2r.html">Get started</a>
 </li>
 <li>
-  <a href="reference/index.html">Reference</a>
+  <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
@@ -97,7 +100,7 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="articles/benchmarks.html">Comparison with `{hash}`</a>
+      <a href="../articles/benchmarks.html">Comparison with `{hash}`</a>
     </li>
   </ul>
 </li>
@@ -120,22 +123,50 @@
       </header>
 
 <div class="row">
-  <div class="contents col-md-9">
+  <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Authors</h1>
+    <h1>String hashes for arbitrary R objects</h1>
+    <small class="dont-index">Source: <a href='https://github.com/vgherard/r2r/blob/master/R/default_hash_fn.R'><code>R/default_hash_fn.R</code></a></small>
+    <div class="hidden name"><code>default_hash_fn.Rd</code></div>
     </div>
 
-    <ul class="list-unstyled">
-      <li>
-        <p><strong>Valerio Gherardi</strong>. Author, maintainer. <a href='https://orcid.org/0000-0002-8215-3013' target='orcid.widget' aria-label='ORCID'><span class='fab fa-orcid orcid' aria-hidden='true'></span></a>
-        </p>
-      </li>
-    </ul>
+    <div class="ref-description">
+    <p>generates string hashes for arbitrary R objects as follows.
+This is the default hash function used by <code>hashset</code>s and <code>hashmap</code>s
+objects.</p>
+    </div>
+
+    <pre class="usage"><span class='fu'>default_hash_fn</span><span class='op'>(</span><span class='va'>key</span><span class='op'>)</span></pre>
+
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>key</th>
+      <td><p>an arbitrary R object.</p></td>
+    </tr>
+    </table>
+
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>a character vector of length one. Hash digest of <code>key</code>.</p>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>If <code>key</code> is an atomic vector (as tested by
+<code><a href='https://rdrr.io/r/base/is.recursive.html'>is.atomic(key)</a></code>) of length one, <code>default_hash_fn(key)</code> simply
+coerces the input to character. For more complex inputs, the function calls
+<code>digest(key)</code> from the <a href='https://rdrr.io/pkg/digest/man/digest.html'>digest</a> package.</p>
+    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
+
+    <p>Valerio Gherardi</p>
 
   </div>
-
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
+  </div>
 </div>
-
 
 
       <footer>
