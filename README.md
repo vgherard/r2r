@@ -5,6 +5,8 @@
 
 <!-- badges: start -->
 
+[![CRAN
+status](https://www.r-pkg.org/badges/version/r2r)](https://CRAN.R-project.org/package=r2r)
 [![R-CMD-check](https://github.com/vgherard/r2r/workflows/R-CMD-check/badge.svg)](https://github.com/vgherard/r2r/actions)
 [![Codecov test
 coverage](https://codecov.io/gh/vgherard/r2r/branch/master/graph/badge.svg)](https://codecov.io/gh/vgherard/r2r?branch=master)
