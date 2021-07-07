@@ -10,6 +10,7 @@ status](https://www.r-pkg.org/badges/version/r2r)](https://CRAN.R-project.org/pa
 [![R-CMD-check](https://github.com/vgherard/r2r/workflows/R-CMD-check/badge.svg)](https://github.com/vgherard/r2r/actions)
 [![Codecov test
 coverage](https://codecov.io/gh/vgherard/r2r/branch/master/graph/badge.svg)](https://codecov.io/gh/vgherard/r2r?branch=master)
+[![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/intent/tweet?text=%7Br2r%7D:%20R-Object%20to%20R-Object%20Hash%20Maps&url=https://vgherard.github.io/r2r&via=ValerioGherardi&hashtags=rstats,datastructures,hashtables)
 <!-- badges: end -->
 
 [`r2r`](https://vgherard.github.io/r2r/) provides a flexible
