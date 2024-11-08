@@ -1,0 +1,10 @@
+pandoc: 3.1.11
+pkgdown: 2.1.1
+pkgdown_sha: ~
+articles:
+  benchmarks: benchmarks.html
+  r2r: r2r.html
+last_built: 2024-11-08T14:14Z
+urls:
+  reference: https://vgherard.github.io/r2r/, https://github.com/vgherard/r2r/reference
+  article: https://vgherard.github.io/r2r/, https://github.com/vgherard/r2r/articles
