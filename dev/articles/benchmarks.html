@@ -229,10 +229,10 @@ keys as follows:</p>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt; Unit: milliseconds</span></span>
 <span><span class="co">#&gt;       expr      min        lq      mean    median        uq       max neval</span></span>
-<span><span class="co">#&gt;   r2r_[[&lt;- 74.84490 103.48747 131.06632 128.51683 160.71973 240.91562    30</span></span>
-<span><span class="co">#&gt;    r2r_[&lt;- 67.28493  92.78682 108.76102 111.02199 120.32874 178.49599    30</span></span>
-<span><span class="co">#&gt;  hash_[[&lt;- 73.75584  91.90400 111.03072 106.48407 128.61512 158.81448    30</span></span>
-<span><span class="co">#&gt;   hash_[&lt;- 35.65803  43.17364  58.33627  53.15366  73.39801  85.78331    30</span></span></code></pre></div>
+<span><span class="co">#&gt;   r2r_[[&lt;- 77.48265 109.95218 140.56213 136.80311 170.55447 250.67877    30</span></span>
+<span><span class="co">#&gt;    r2r_[&lt;- 71.38860  93.86577 112.88495 118.53413 126.69079 187.67617    30</span></span>
+<span><span class="co">#&gt;  hash_[[&lt;- 72.37386  94.75037 115.80221 112.66085 133.38124 164.04173    30</span></span>
+<span><span class="co">#&gt;   hash_[&lt;- 36.56235  39.22179  60.10834  60.01538  77.85402  94.67551    30</span></span></code></pre></div>
 <p>As it is seen, <code>r2r</code> and <code>hash</code> have comparable
 performances at the insertion of key-value pairs, with both vectorized
 and non-vectorized insertions, <code>hash</code> being somewhat more
@@ -257,11 +257,11 @@ form:</p>
 <span>    <span class="op">}</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt; Unit: milliseconds</span></span>
-<span><span class="co">#&gt;     expr      min        lq      mean    median        uq       max neval</span></span>
-<span><span class="co">#&gt;   r2r_[[ 91.18632 108.85000 132.87109 127.60355 151.41480 229.62424    30</span></span>
-<span><span class="co">#&gt;    r2r_[ 82.48770  93.99488 128.93846 127.93589 145.16381 204.02764    30</span></span>
-<span><span class="co">#&gt;  hash_[[  9.71326  10.49333  14.05237  11.49439  18.55704  20.46443    30</span></span>
-<span><span class="co">#&gt;   hash_[ 56.55098  62.01705  79.12361  79.45257  89.72820 150.06889    30</span></span></code></pre></div>
+<span><span class="co">#&gt;     expr       min        lq      mean    median        uq       max neval</span></span>
+<span><span class="co">#&gt;   r2r_[[ 89.858753 113.08069 134.58899 127.60840 150.57966 236.91268    30</span></span>
+<span><span class="co">#&gt;    r2r_[ 83.333987  98.58147 128.42749 128.78632 151.94201 203.52953    30</span></span>
+<span><span class="co">#&gt;  hash_[[  9.979567  10.60376  14.02222  12.53820  17.45636  19.39425    30</span></span>
+<span><span class="co">#&gt;   hash_[ 54.208473  61.07616  78.86803  82.15281  88.44918 144.19114    30</span></span></code></pre></div>
 <p>For non-vectorized queries, <code>hash</code> is significantly faster
 (by one order of magnitude) than <code>r2r</code>. This is likely due to
 the fact that the <code>[[</code> method dispatch is handled natively by
@@ -287,9 +287,9 @@ expressions with a new set of keys:</p>
 <span>    <span class="op">}</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt; Unit: milliseconds</span></span>
-<span><span class="co">#&gt;         expr       min       lq     mean   median       uq       max neval</span></span>
-<span><span class="co">#&gt;   r2r_[[_bis 63.151787 71.53489 95.23865 98.99953 106.0069 147.55939    30</span></span>
-<span><span class="co">#&gt;  hash_[[_bis  9.988163 10.31657 14.42615 14.71151  17.5831  21.61941    30</span></span></code></pre></div>
+<span><span class="co">#&gt;         expr       min       lq     mean    median        uq       max neval</span></span>
+<span><span class="co">#&gt;   r2r_[[_bis 64.379006 74.73516 97.15788 103.78006 112.40051 154.58997    30</span></span>
+<span><span class="co">#&gt;  hash_[[_bis  9.549355 10.31295 14.39568  14.20502  17.36714  27.14102    30</span></span></code></pre></div>
 <p>The results are similar to the ones already commented. Finally, we
 test the performances of the two packages in checking the existence of
 keys (notice that here <code>has_key</code> refers to
@@ -310,8 +310,8 @@ keys (notice that here <code>has_key</code> refers to
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt; Unit: milliseconds</span></span>
 <span><span class="co">#&gt;          expr       min        lq      mean    median        uq      max neval</span></span>
-<span><span class="co">#&gt;   r2r_has_key  61.58917  64.40388  86.74789  86.21185  94.95359 226.3060    30</span></span>
-<span><span class="co">#&gt;  hash_has_key 183.81237 202.30531 244.05669 238.02724 278.41927 342.2075    30</span></span></code></pre></div>
+<span><span class="co">#&gt;   r2r_has_key  63.62732  65.80737  88.23604  83.68295  99.52244 235.8265    30</span></span>
+<span><span class="co">#&gt;  hash_has_key 187.33443 209.76530 245.66950 235.47103 275.34359 340.5216    30</span></span></code></pre></div>
 <p>The results are comparable for the two packages, <code>r2r</code>
 being slightly more performant in this particular case.</p>
 </div>
@@ -335,14 +335,14 @@ will use <code><a href="../reference/delete.html">delete()</a></code> (which ref
 <span>    <span class="op">}</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt; Unit: milliseconds</span></span>
-<span><span class="co">#&gt;                    expr        min         lq       mean     median         uq</span></span>
-<span><span class="co">#&gt;              r2r_delete 111.969148 152.230656 175.953126 168.753848 195.485756</span></span>
-<span><span class="co">#&gt;             hash_delete  63.624849  71.865143  90.733492  83.634792 109.876516</span></span>
-<span><span class="co">#&gt;  hash_vectorized_delete   2.084557   2.437284   2.836931   2.746757   3.154602</span></span>
+<span><span class="co">#&gt;                    expr        min         lq      mean     median         uq</span></span>
+<span><span class="co">#&gt;              r2r_delete 116.634276 157.500642 179.81551 175.078396 197.807615</span></span>
+<span><span class="co">#&gt;             hash_delete  63.630730  73.596011  94.89003  86.325400 117.545725</span></span>
+<span><span class="co">#&gt;  hash_vectorized_delete   1.929858   2.835968   3.31584   3.361728   3.660104</span></span>
 <span><span class="co">#&gt;         max neval</span></span>
-<span><span class="co">#&gt;  276.137783    30</span></span>
-<span><span class="co">#&gt;  138.526695    30</span></span>
-<span><span class="co">#&gt;    3.940678    30</span></span></code></pre></div>
+<span><span class="co">#&gt;  287.227088    30</span></span>
+<span><span class="co">#&gt;  140.902474    30</span></span>
+<span><span class="co">#&gt;    5.384158    30</span></span></code></pre></div>
 <p>The vectorized version of <code>hash</code> significantly outperforms
 the non-vectorized versions (by roughly two orders of magnitude in
 speed). Currently, <code>r2r</code> does not support vectorized key
