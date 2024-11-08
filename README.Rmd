@@ -18,7 +18,7 @@ knitr::opts_chunk$set(
 <!-- badges: start -->
 [![CRAN status](https://www.r-pkg.org/badges/version/r2r)](https://CRAN.R-project.org/package=r2r)
 [![R-CMD-check](https://github.com/vgherard/r2r/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/vgherard/r2r/actions/workflows/R-CMD-check.yaml)
-[![Codecov test coverage](https://codecov.io/gh/vgherard/r2r/branch/master/graph/badge.svg)](https://codecov.io/gh/vgherard/r2r?branch=master)
+[![Codecov test coverage](https://codecov.io/gh/vgherard/r2r/graph/badge.svg)](https://app.codecov.io/gh/vgherard/r2r)
 [![R-universe status](https://vgherard.r-universe.dev/badges/r2r)](https://vgherard.r-universe.dev/)
 [![Website](https://img.shields.io/badge/Website-here-blue)](https://vgherard.github.io/r2r/)
 [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/intent/tweet?text={r2r}:%20R-Object%20to%20R-Object%20Hash%20Maps&url=https://vgherard.github.io/r2r&via=ValerioGherardi&hashtags=rstats,datastructures,hashtables)

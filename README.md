@@ -7,9 +7,9 @@
 
 [![CRAN
 status](https://www.r-pkg.org/badges/version/r2r)](https://CRAN.R-project.org/package=r2r)
-[![R-CMD-check](https://github.com/vgherard/r2r/workflows/R-CMD-check/badge.svg)](https://github.com/vgherard/r2r/actions)
+[![R-CMD-check](https://github.com/vgherard/r2r/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/vgherard/r2r/actions/workflows/R-CMD-check.yaml)
 [![Codecov test
-coverage](https://codecov.io/gh/vgherard/r2r/branch/master/graph/badge.svg)](https://codecov.io/gh/vgherard/r2r?branch=master)
+coverage](https://codecov.io/gh/vgherard/r2r/graph/badge.svg)](https://app.codecov.io/gh/vgherard/r2r)
 [![R-universe
 status](https://vgherard.r-universe.dev/badges/r2r)](https://vgherard.r-universe.dev/)
 [![Website](https://img.shields.io/badge/Website-here-blue)](https://vgherard.github.io/r2r/)
