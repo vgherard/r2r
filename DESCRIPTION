@@ -26,6 +26,7 @@ Suggests:
     testthat (>= 3.0.0),
     rmarkdown,
     microbenchmark,
-    hash
+    hash,
+    tibble
 Config/testthat/edition: 3
 VignetteBuilder: knitr
