@@ -5,7 +5,7 @@ Authors@R:
     person(given = "Valerio",
            family = "Gherardi",
            role = c("aut", "cre"),
-           email = "vgherard@sissa.it",
+           email = "vgherard840@gmail.com",
            comment = c(ORCID = "0000-0002-8215-3013"))
 Description: 
 	Implementation of hash tables (hash sets and hash maps) in R, 
