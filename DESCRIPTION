@@ -1,6 +1,6 @@
 Package: r2r
 Title: R-Object to R-Object Hash Maps
-Version: 0.1.1.9000
+Version: 0.1.2
 Authors@R: 
     person(given = "Valerio",
            family = "Gherardi",
